@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using ApplicationContextData;
 
-namespace ApplicationContextData
+namespace SelectedLib
 {
     public class SelectedItems
     {

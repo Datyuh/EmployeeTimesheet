@@ -149,11 +149,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationContextData\ApplicationContextDataLib.csproj">
+    <ProjectReference Include="..\ApplicationContextDataLib\ApplicationContextDataLib.csproj">
       <Project>{c1e7e962-84ef-4e72-a2f8-e709dd136f23}</Project>
       <Name>ApplicationContextDataLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BaseModelModule\BaseModelModuleLib.csproj">
+    <ProjectReference Include="..\BaseModelModuleLib\BaseModelModuleLib.csproj">
       <Project>{b7e234d3-6e22-44b2-9848-b5cae5c58aa0}</Project>
       <Name>BaseModelModuleLib</Name>
     </ProjectReference>

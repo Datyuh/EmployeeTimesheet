@@ -51,7 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationContextData\ApplicationContextDataLib.csproj">
+    <ProjectReference Include="..\ApplicationContextDataLib\ApplicationContextDataLib.csproj">
       <Project>{c1e7e962-84ef-4e72-a2f8-e709dd136f23}</Project>
       <Name>ApplicationContextDataLib</Name>
     </ProjectReference>

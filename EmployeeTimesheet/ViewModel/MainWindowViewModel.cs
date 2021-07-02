@@ -7,6 +7,7 @@ using BaseModelModule.ViewsModel.Base;
 using BaseModelModule.Commands;
 using EmployeeTimesheet.Model;
 using EmployeeTimesheet.Window;
+using SelectedLib;
 
 namespace EmployeeTimesheet.ViewModel
 {

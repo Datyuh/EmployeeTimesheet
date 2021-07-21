@@ -42,9 +42,11 @@ namespace EmployeeTimesheet.ViewModel
                     workWindow.Show();
                     CloseAction();
                 }
+                else
+                    ErrorPasOrLogMes();
             }
-            MessageBox.Show("Неверно введен логин или пароль", "Ошибка", MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            else
+                ErrorPasOrLogMes();
         }
 
         public MainWindowViewModel()
@@ -54,6 +56,12 @@ namespace EmployeeTimesheet.ViewModel
             GetInWorkWindowCommand =
                 new LambdaCommand(OnGetInWorkWindowCommandExecuted, CanGetInWorkWindowCommandExecute);
             NameKbOgkSource = _selected.SelectedNameKbOgks;
+        }
+
+        private void ErrorPasOrLogMes()
+        {
+            MessageBox.Show("Неверно введен логин или пароль", "Ошибка", MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 }

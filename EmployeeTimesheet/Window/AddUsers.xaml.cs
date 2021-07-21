@@ -7,10 +7,10 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class AddUsers
     {
-        public AddUsers()
+        public AddUsers(WorkWindowViewModel owner)
         {
             InitializeComponent();
-            DataContext = new AddUsersViewModel();
+            DataContext = new AddUsersViewModel(owner);
         }
     }
 }

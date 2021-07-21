@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -6,11 +7,13 @@ using ApplicationContextData;
 using BaseModelModule.Commands;
 using BaseModelModule.ViewsModel.Base;
 using EmployeeTimesheet.Model;
+using SelectedLib;
 
 namespace EmployeeTimesheet.ViewModel
 {
     class AddUsersViewModel : BaseViewModel
     {
+        private readonly WorkWindowViewModel _workWindow;
         private ObservableCollection<AddUserModel> _addUsersInGrid = new();
         public ObservableCollection<AddUserModel> AddUsersInGrid { get => _addUsersInGrid; set => Set(ref _addUsersInGrid, value); }
 
@@ -26,34 +29,55 @@ namespace EmployeeTimesheet.ViewModel
         private void OnAddUsersInBaseCommandExecuted(object p)
         {
             ApplicationContext addUsersInBase = new();
+            SelectedWorkModel selectedWorkModel = new();
+            List<int> checkUsers = selectedWorkModel.SelectedServiceNumbersUsers();
             try
             {
-                foreach (var item in AddUsersInGrid)
+                foreach (AddUserModel item in AddUsersInGrid)
                 {
-
-                    var convertServiceNumbers = Convert.ToInt32(item.ServiceNumbers);
-
-                    Employee employee = new Employee()
+                    if (item.FirstName != null && item.LastName != null &&
+                        item.PatronymicName != null && item.ServiceNumbers != null)
                     {
-                        Fio = $"{item.LastName} {item.FirstName} {item.PatronymicName}",
-                        ServiceNumbers = convertServiceNumbers,
-                        NameKbs = StaticDataModel.NameKbFromMain,
-                    };
-                    addUsersInBase.Employees.Add(employee);
-                    addUsersInBase.SaveChanges();
+                        int convertServiceNumbers = Convert.ToInt32(item.ServiceNumbers);
+
+                        Employee employee = new()
+                        {
+                            Fio = $"{item.LastName} {item.FirstName} {item.PatronymicName}",
+                            ServiceNumbers = convertServiceNumbers,
+                            StatusUsers = "Работает",
+                            NameKbId = StaticDataModel.NameKbFromMain.Id,
+                        };
+
+                        if (checkUsers.Contains(employee.ServiceNumbers))
+                        {
+                            MessageBox.Show("Проверте введенные данные\nОдин или несколько сотрудников уже имеются в таблице\n" +
+                                            "Для удаления из таблицы выделите сотрудника и нажмите кнопку Delete",
+                                "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            addUsersInBase.Employees.Add(employee);
+                            addUsersInBase.SaveChanges();
+                            _workWindow.AddDataEmployeeTimesheet.Clear();
+                            _workWindow.AddEployeeTimessheet();
+                            MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    else
+                        MessageBox.Show("Не все поля заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
                 }
             }
             catch (FormatException)
             {
-                MessageBox.Show("Введите целые числа.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Введите целые числа в столбец \"Таб. номер\"", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        public AddUsersViewModel()
+        public AddUsersViewModel(WorkWindowViewModel owner)
         {
-            AddUsersInGrid = new ObservableCollection<AddUserModel>();
-            AddUsersInGrid.Add(new(null, null, null, null));
+            _workWindow = owner;
+            AddUsersInGrid = new ObservableCollection<AddUserModel> {new(null, null, null, null)};
             AddUsersNewRowCommand = new LambdaCommand(OnAddUsersNewRowCommandExecuted, CanAddUsersNewRowCommandExecute);
             AddUsersInBaseCommand = new LambdaCommand(OnAddUsersInBaseCommandExecuted, CanAddUsersInBaseCommandExecute);
         }
@@ -62,7 +86,7 @@ namespace EmployeeTimesheet.ViewModel
         {
             for (int i = 0; i < AddUsersInGrid.Count;)
             {
-                AddUsersInGrid.Add(new(null, null, null, null));
+                AddUsersInGrid.Add(new AddUserModel(null, null, null, null));
                 break;
             }
         }

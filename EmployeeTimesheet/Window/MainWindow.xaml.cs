@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using System.Windows;
 using EmployeeTimesheet.ViewModel;
 
 namespace EmployeeTimesheet.Window

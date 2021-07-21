@@ -13,6 +13,8 @@ namespace ApplicationContextData
         [Required]
         public string Fio { get; set; }
         [Required]
+        public string StatusUsers { get; set; }
+        [Required]
         public int ServiceNumbers { get; set; }
 
         public int NameKbId { get; set; }

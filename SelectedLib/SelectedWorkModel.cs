@@ -8,7 +8,12 @@ namespace SelectedLib
 {
     public sealed class SelectedWorkModel
     {
-        private ApplicationContext _db = new();
+        private readonly ApplicationContext _db;
+
+        public SelectedWorkModel(ApplicationContext db)
+        {
+            _db = db;
+        }
 
         private ObservableCollection<EmployeeTimesheet> SelectedEmployeeTimesheet => SelectedEmployeeTimesheets();
         

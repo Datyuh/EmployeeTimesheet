@@ -28,8 +28,7 @@ namespace EmployeeTimesheet.ViewModel
         private bool CanAddUsersInBaseCommandExecute(object p) => true;
         private void OnAddUsersInBaseCommandExecuted(object p)
         {
-            ApplicationContext addUsersInBase = new();
-            SelectedWorkModel selectedWorkModel = new();
+            SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             List<int> checkUsers = selectedWorkModel.SelectedServiceNumbersUsers();
             try
             {
@@ -46,6 +45,7 @@ namespace EmployeeTimesheet.ViewModel
                             ServiceNumbers = convertServiceNumbers,
                             StatusUsers = "Работает",
                             NameKbId = StaticDataModel.NameKbFromMain.Id,
+                            NameKbs = StaticDataModel.NameKbFromMain,
                         };
 
                         if (checkUsers.Contains(employee.ServiceNumbers))
@@ -56,17 +56,17 @@ namespace EmployeeTimesheet.ViewModel
                         }
                         else
                         {
-                            addUsersInBase.Employees.Add(employee);
-                            addUsersInBase.SaveChanges();
+                            StaticDataModel.ApplicationContext.Employees.Add(employee);
+                            StaticDataModel.ApplicationContext.SaveChanges();
                             _workWindow.AddDataEmployeeTimesheet.Clear();
                             _workWindow.AddEployeeTimessheet();
-                            MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                     else
                         MessageBox.Show("Не все поля заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
-                    
                 }
+                MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+
             }
             catch (FormatException)
             {
@@ -77,7 +77,7 @@ namespace EmployeeTimesheet.ViewModel
         public AddUsersViewModel(WorkWindowViewModel owner)
         {
             _workWindow = owner;
-            AddUsersInGrid = new ObservableCollection<AddUserModel> {new(null, null, null, null)};
+            AddUsersInGrid = new ObservableCollection<AddUserModel> { new(null, null, null, null) };
             AddUsersNewRowCommand = new LambdaCommand(OnAddUsersNewRowCommandExecuted, CanAddUsersNewRowCommandExecute);
             AddUsersInBaseCommand = new LambdaCommand(OnAddUsersInBaseCommandExecuted, CanAddUsersInBaseCommandExecute);
         }

@@ -21,7 +21,7 @@ namespace ApplicationContextData
         [ForeignKey("NameKbId")]
         public NameKB NameKbs { get; set; }
 
-        public ICollection<EmployeeTimesheet> EmployeeTimesheets { get; set; }
+        public List<EmployeeTimesheet> EmployeeTimesheets { get; set; } = new();
 
 
         [DataType(DataType.Date)]

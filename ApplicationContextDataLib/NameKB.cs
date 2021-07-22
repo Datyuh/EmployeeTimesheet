@@ -15,7 +15,7 @@ namespace ApplicationContextData
         [Required]
         public string PasswordsKb { get; set; }
 
-        public ICollection<Employee> Employees { get; set; }
+        public List<Employee> Employees { get; set; } = new();
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy}", ApplyFormatInEditMode = true)]

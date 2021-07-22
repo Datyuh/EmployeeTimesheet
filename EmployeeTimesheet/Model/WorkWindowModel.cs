@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using ApplicationContextData;
 
 namespace EmployeeTimesheet.Model
 {
     public class WorkWindowModel
     {
-        public int Id { get; set; }
+        public Employee Employees { get; set; }
         public string Fio { get; set; }
         public int ServiceNumbers { get; set; }
         public int SumDayWork { get; set; }

@@ -14,8 +14,6 @@ namespace EmployeeTimesheet.ViewModel
 {
     public class WorkWindowViewModel : BaseViewModel
     {
-        private readonly ApplicationContext _db = new();
-
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
         public ObservableCollection<WorkWindowModel> AddDataEmployeeTimesheet
         {
@@ -48,10 +46,10 @@ namespace EmployeeTimesheet.ViewModel
                 {
                     Status = items.ListReportCards,
                     DateTimeAddData = items.DateEnterInBases,
-                    EmployeesId = items.Id,
+                    Employees = items.Employees,
                 };
-                _db.EmployeeTimesheets.Add(employeeTimesheet);
-                _db.SaveChanges();
+                StaticDataModel.ApplicationContext.EmployeeTimesheets.Add(employeeTimesheet);
+                StaticDataModel.ApplicationContext.SaveChanges();
             }
             AddDataEmployeeTimesheet.Clear();
             AddEployeeTimessheet();
@@ -69,9 +67,9 @@ namespace EmployeeTimesheet.ViewModel
             {
                 if (items.UpdateUserStatusCheckBox is true)
                 {
-                    Employee employee = _db.Employees.Find(items.Id);
+                    Employee employee = StaticDataModel.ApplicationContext.Employees.Find(items.Employees.Id);
                     if (employee != null) employee.StatusUsers = "Уволен";
-                    _db.SaveChanges();
+                    StaticDataModel.ApplicationContext.SaveChanges();
                 }
             }
             AddDataEmployeeTimesheet.Clear();
@@ -83,7 +81,8 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnGenerateReportCommandExecuted(object p)
         {
-           
+            var selectedEmployee = new SelectedForExcel(StaticDataModel.ApplicationContext);
+            _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime());
         }
 
 
@@ -100,7 +99,7 @@ namespace EmployeeTimesheet.ViewModel
 
         public void AddEployeeTimessheet()
         {
-            SelectedWorkModel selectedWorkModel = new();
+            SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             ObservableCollection<Employee> selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
             var listReportCard = new List<string> {"Работал", "ОБС", "Больничный"};
             var dateEnterInBase = DateTime.Now.Date;
@@ -111,7 +110,7 @@ namespace EmployeeTimesheet.ViewModel
             {
                 WorkWindowModel workWindowModel = new()
                 {
-                    Id = workEmployee.Id,
+                    Employees = workEmployee,
                     Fio = workEmployee.Fio,
                     ServiceNumbers = workEmployee.ServiceNumbers,
                     SumDayWork = selectedWorkModel.SumDayWork(workEmployee),

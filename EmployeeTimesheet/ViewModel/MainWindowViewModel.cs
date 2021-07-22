@@ -13,10 +13,10 @@ namespace EmployeeTimesheet.ViewModel
 {
     class MainWindowViewModel : BaseViewModel
     {
-        private readonly SelectedItems _selected = new();
+        private readonly SelectedItems _selected = new(StaticDataModel.ApplicationContext);
 
-        private ObservableCollection<object> _nameKbOgkSource;
-        public ObservableCollection<object> NameKbOgkSource { get => _nameKbOgkSource; set => Set(ref _nameKbOgkSource, value); }
+        private ObservableCollection<NameKB> _nameKbOgkSource;
+        public ObservableCollection<NameKB> NameKbOgkSource { get => _nameKbOgkSource; set => Set(ref _nameKbOgkSource, value); }
 
         private string _selectTextPassword;
         public string SelectTextPassword { get => _selectTextPassword; set => Set(ref _selectTextPassword, value); }
@@ -30,10 +30,9 @@ namespace EmployeeTimesheet.ViewModel
         private bool CanGetInWorkWindowCommandExecute(object p) => true;
         private void OnGetInWorkWindowCommandExecuted(object p)
         {
-            StaticDataModel.NameKbFromMain = SelectedNameKb;
-
             if (SelectedNameKb != null && SelectTextPassword != null)
             {
+                StaticDataModel.NameKbFromMain = SelectedNameKb;
                 _selected.Log = SelectedNameKb.NameKbOgk;
                 _selected.Pas = SelectTextPassword;
                 WorkWindow workWindow = new();

@@ -1,6 +1,6 @@
 ﻿namespace EmployeeTimesheet.Model
 {
-    class AddUserModel
+    public class AddUserModel
     {
         public AddUserModel(string LastName, string FirstName, string PatronymicName, string ServiceNumbers)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using ApplicationContextData;
 using BaseModelModule.Commands;
@@ -40,19 +41,27 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnAddDataInBaseCommandExecuted(object p)
         {
-            foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
+            if (AddDataEmployeeTimesheet.Select(x => x.ListReportCards).Contains(null))
             {
-                ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
-                {
-                    Status = items.ListReportCards,
-                    DateTimeAddData = items.DateEnterInBases,
-                    Employees = items.Employees,
-                };
-                StaticDataModel.ApplicationContext.EmployeeTimesheets.Add(employeeTimesheet);
-                StaticDataModel.ApplicationContext.SaveChanges();
+                MessageBox.Show("Не установлен статус работкника\\ов\nна выбранную дату в графе \"Выбор статуса\"",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            AddDataEmployeeTimesheet.Clear();
-            AddEployeeTimessheet();
+            else
+            {
+                foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
+                {
+                    ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
+                    {
+                        Status = items.ListReportCards,
+                        DateTimeAddData = items.DateEnterInBases,
+                        Employees = items.Employees,
+                    };
+                    StaticDataModel.ApplicationContext.EmployeeTimesheets.Add(employeeTimesheet);
+                    StaticDataModel.ApplicationContext.SaveChanges();
+                }
+                AddDataEmployeeTimesheet.Clear();
+                AddEployeeTimessheet();
+            }
         }
 
         public ICommand UpdateUserStatusCommand { get; }
@@ -81,8 +90,17 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnGenerateReportCommandExecuted(object p)
         {
-            var selectedEmployee = new SelectedForExcel(StaticDataModel.ApplicationContext);
-            _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime());
+            ReportOutputWindow reportOutput = new(AddDataEmployeeTimesheet);
+            reportOutput.ShowDialog();
+        }
+
+        public ICommand AboutProgramCommand { get; }
+        private bool CanAboutProgramCommandExecute(object p) => true;
+
+        private void OnAboutProgramCommandExecuted(object p)
+        {
+            AboutProgram aboutProgram = new();
+            aboutProgram.ShowDialog();
         }
 
 
@@ -94,6 +112,7 @@ namespace EmployeeTimesheet.ViewModel
             AddDataInBaseCommand = new LambdaCommand(OnAddDataInBaseCommandExecuted, CanAddDataInBaseCommandExecute);
             UpdateUserStatusCommand = new LambdaCommand(OnUpdateUserStatusCommandExecuted, CanUpdateUserStatusCommandExecute);
             GenerateReportCommand = new LambdaCommand(OnGenerateReportCommandExecuted, CanGenerateReportCommandExecute);
+            AboutProgramCommand = new LambdaCommand(OnAboutProgramCommandExecuted, CanAboutProgramCommandExecute);
             AddEployeeTimessheet();
         }
 
@@ -101,7 +120,7 @@ namespace EmployeeTimesheet.ViewModel
         {
             SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             ObservableCollection<Employee> selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
-            var listReportCard = new List<string> {"Работал", "ОБС", "Больничный"};
+            var listReportCard = new List<string> { "Работал", "ОБС", "Больничный", "Отпуск" };
             var dateEnterInBase = DateTime.Now.Date;
             AddDataEmployeeTimesheet = new ObservableCollection<WorkWindowModel>();
 
@@ -116,6 +135,7 @@ namespace EmployeeTimesheet.ViewModel
                     SumDayWork = selectedWorkModel.SumDayWork(workEmployee),
                     SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
                     SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee),
+                    SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),
                     ListReportCard = listReportCard,
                     DateEnterInBases = dateEnterInBase
                 };

@@ -67,5 +67,16 @@ namespace SelectedLib
                 .Count();
             return sumDayMedical;
         }
+
+        public int SumDayVacation(Employee workEmployee)
+        {
+            var ыumDayVacation = SelectedEmployeeTimesheet
+                .Where(e => e.Status == "Отпуск"
+                            && e.Employees == workEmployee
+                            && e.DateTimeAddData.Month == DateTime.Now.Month)
+                .Select(p => p.DateTimeAddData)
+                .Count();
+            return ыumDayVacation;
+        }
     }
 }

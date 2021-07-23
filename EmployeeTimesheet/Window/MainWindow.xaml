@@ -8,7 +8,7 @@
     Title="Табель рабочего времени"
     Width="320"
     Height="250"
-    Icon="../Image/Icon2.png"
+    Icon="../Image/Time_machine.ico"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
     WindowStyle="ToolWindow"
@@ -29,7 +29,7 @@
                     VerticalAlignment="Center"
                     Text="Наименование КБ" />
                 <ComboBox
-                    x:Name="NameKB"
+                    x:Name="NameKb"
                     Width="150"
                     Height="30"
                     Margin="10,0,0,0"

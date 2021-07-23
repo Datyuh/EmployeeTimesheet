@@ -12,6 +12,7 @@ namespace EmployeeTimesheet.Model
         public int SumDayWork { get; set; }
         public int SumDayOwnExpense { get; set; }
         public int SumDayMedical { get; set; }
+        public int SumDayVacation { get; set; }
         public List<string> ListReportCard { get; set; }
         public DateTime DateEnterInBase { get; set; }
         public string ListReportCards { get; set; }

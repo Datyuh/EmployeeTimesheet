@@ -10,24 +10,26 @@ namespace EmployeeTimesheet.Model
     {
         private int _rowExcel = 4;
         private int _columnExcelServNum = 3;
-        private int _columsExcel = 3;
+        private int _columsExcel = 2;
         private int _total;
+        private IEnumerable<DateTime> _sevenDaysAWeek;
+
         private readonly List<DateTime> _dateOfMonths = new();
-        private Excel.Application ObjExcel;
-        private Excel.Workbook ObjWorkBook;
-        private Excel.Worksheet ObjWorkSheet;
+        private readonly Excel.Application _objExcel;
+        private readonly Excel.Workbook _objWorkBook;
+        private readonly Excel.Worksheet _objWorkSheet;
         private readonly ObservableCollection<ApplicationContextData.EmployeeTimesheet> _allEmployeeTimesheets;
 
         public WorkingWithExcelModel(ObservableCollection<ApplicationContextData.EmployeeTimesheet> allEmployeeTimesheets)
-        {
+        { 
             _allEmployeeTimesheets = allEmployeeTimesheets;
-            _total = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month) + _rowExcel + 1;
-            ObjExcel = new Excel.Application();
+            _objExcel = new Excel.Application();
+
             //Книга.
-            ObjWorkBook = ObjExcel.Workbooks.Add(System.Reflection.Missing.Value);
-            ObjExcel.Visible = true;
+            _objWorkBook = _objExcel.Workbooks.Add(System.Reflection.Missing.Value);
+            _objExcel.Visible = true;
             //Таблица.
-            ObjWorkSheet = (Excel.Worksheet)ObjWorkBook.Sheets[1];
+            _objWorkSheet = (Excel.Worksheet)_objWorkBook.Sheets[1];
 
             DateOfMonthNow();
             AddColumnName();
@@ -45,54 +47,65 @@ namespace EmployeeTimesheet.Model
             {
                 _dateOfMonths.Add(date.Date);
             }
+
+            _sevenDaysAWeek = _dateOfMonths
+                .Where(e => e.DayOfWeek != DayOfWeek.Saturday && e.DayOfWeek != DayOfWeek.Sunday)
+                .Select(e => e.Date);
+
+            _total = _sevenDaysAWeek.Count() + _rowExcel;
         }
 
         private void AddColumnName()
         {
-            var excelColumnFios = (Excel.Range)ObjWorkSheet.Cells[2, 2];
+            var excelColumnFios = (Excel.Range)_objWorkSheet.Cells[2, 2];
             excelColumnFios.Value2 = "Ф. И. О.";
-            var excelColumnServNumbrs = (Excel.Range)ObjWorkSheet.Cells[2, 3];
+            var excelColumnServNumbrs = (Excel.Range)_objWorkSheet.Cells[2, 3];
             excelColumnServNumbrs.Value2 = "Таб. №";
-            var excelTotal = (Excel.Range)ObjWorkSheet.Cells[2, _total];
+            var excelTotal = (Excel.Range)_objWorkSheet.Cells[2, _total];
             excelTotal.Value2 = "Итого отработанных дней";
         }
 
         private void AddRowDate()
         {
-            foreach (var allEmployeeTimesheet in _allEmployeeTimesheets)
+            foreach (var allEmployeeTimesheet in _allEmployeeTimesheets.Where(e => e.Employees.StatusUsers == "Работает").Select(e => e))
             {
                 _rowExcel = 4;
-                var excelColumnFio = (Excel.Range)ObjWorkSheet.Cells[_columsExcel, 2];
+
+                var x = _objWorkSheet.Cells[_columsExcel, 2].Text;
+                if (x != allEmployeeTimesheet.Employees.Fio)
+                    _columsExcel++;
+
+                var excelColumnFio = (Excel.Range)_objWorkSheet.Cells[_columsExcel, 2];
                 excelColumnFio.Value2 = allEmployeeTimesheet.Employees.Fio;
 
-                var excelServNomb = (Excel.Range)ObjWorkSheet.Cells[_columsExcel, 3];
+                var excelServNomb = (Excel.Range)_objWorkSheet.Cells[_columsExcel, 3];
                 excelServNomb.Value2 = allEmployeeTimesheet.Employees.ServiceNumbers;
 
-                var excelTotalStatus = (Excel.Range)ObjWorkSheet.Cells[_columsExcel, _total];
+                var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _total];
                 excelTotalStatus.Value2 = _allEmployeeTimesheets
-                    .Select(x => x)
-                    .Count(x => x.Status == "Работал" && x.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                    .Select(e => e)
+                    .Count(e => e.Status == "Работал" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
 
-                foreach (var dateOfMonth in _dateOfMonths)
+                foreach (var dateOfMonth in _sevenDaysAWeek)
                 {
-                    var excelDate = (Excel.Range)ObjWorkSheet.Cells[2, _rowExcel];
+                    var excelDate = (Excel.Range)_objWorkSheet.Cells[2, _rowExcel];
                     excelDate.NumberFormatLocal = "ДД.ММ.ГГГГ";
                     excelDate.Value2 = dateOfMonth.Date;
 
                     if (dateOfMonth.Date == allEmployeeTimesheet.DateTimeAddData)
                     {
-                        var excelStatusEmpl = (Excel.Range)ObjWorkSheet.Cells[_columsExcel, _rowExcel];
+                        var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
                         excelStatusEmpl.Value2 = allEmployeeTimesheet.Status switch
                         {
                             "Работал" => "+",
                             "ОБС" => "Н",
                             "Больничный" => "Б",
+                            "Отпуск" => "О",
                             _ => excelStatusEmpl.Value2
                         };
                     }
                     _rowExcel++;
                 }
-                _columsExcel++;
             }
         }
     }

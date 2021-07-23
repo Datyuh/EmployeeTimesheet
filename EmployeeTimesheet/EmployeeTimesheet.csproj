@@ -87,6 +87,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\AddUserModel.cs" />
     <Compile Include="Model\StaticDataModel.cs" />
+    <Compile Include="Model\WorkingExcelShortReportModel.cs" />
     <Compile Include="Model\WorkingWithExcelModel.cs" />
     <Compile Include="Model\WorkWindowModel.cs" />
     <Compile Include="Resources\BindablePasswordBox.xaml.cs">
@@ -94,9 +95,16 @@
     </Compile>
     <Compile Include="ViewModel\AddUsersViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ReportOutputViewModel.cs" />
     <Compile Include="ViewModel\WorkWindowViewModel.cs" />
+    <Compile Include="Window\AboutProgram.xaml.cs">
+      <DependentUpon>AboutProgram.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\AddUsers.xaml.cs">
       <DependentUpon>AddUsers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window\ReportOutputWindow.xaml.cs">
+      <DependentUpon>ReportOutputWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window\WorkWindow.xaml.cs">
       <DependentUpon>WorkWindow.xaml</DependentUpon>
@@ -104,6 +112,10 @@
     <Page Include="Resources\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\AboutProgram.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\AddUsers.xaml">
       <SubType>Designer</SubType>
@@ -121,6 +133,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Window\ReportOutputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Window\WorkWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -168,9 +184,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\Icon2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
@@ -182,6 +195,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Image\Agent_007.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Time_machine.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

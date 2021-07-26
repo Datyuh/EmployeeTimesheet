@@ -52,9 +52,12 @@ namespace EmployeeTimesheet.ViewModel
             {
                 foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
                 {
-                    var dateInBse = StaticDataModel.ApplicationContext.EmployeeTimesheets
-                        .Where(p => p.EmployeesId == items.Employees.Id).Select(p => p.DateTimeAddData).FirstOrDefault();
-                    if (items.DateEnterInBases.Date == dateInBse.Date)
+                    var dateInBse =
+                        StaticDataModel.ApplicationContext.EmployeeTimesheets
+                            .Where(x => x.EmployeesId == items.Employees.Id &&
+                                        x.DateTimeAddData == items.DateEnterInBases).Select(x => x.DateTimeAddData)
+                            .Contains(items.DateEnterInBases);
+                    if (dateInBse is false)
                     {
                         _haveDateInBase = true;
                         ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
@@ -68,7 +71,6 @@ namespace EmployeeTimesheet.ViewModel
                     }
                     else
                         _haveDateInBase = false;
-                        
                 }
 
                 switch (_haveDateInBase)
@@ -78,6 +80,8 @@ namespace EmployeeTimesheet.ViewModel
                             "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
                         break;
                     default:
+                        MessageBox.Show("Данные занесены в таблицу",
+                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
                         AddDataEmployeeTimesheet.Clear();
                         AddEployeeTimessheet();
                         break;
@@ -141,7 +145,7 @@ namespace EmployeeTimesheet.ViewModel
         {
             SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             ObservableCollection<Employee> selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
-            var listReportCard = new List<string> { "Явка", "ОБС", "Больничный", "Отпуск осн.", "Командировка", "Работа в праз. и вых.", "Праздн. дни" };
+            var listReportCard = new List<string> { "Явка", "ОБС", "Больничный", "Отпуск осн.", "Командировка", "Работа в праз. и вых.", "Праздн. и вых. дни" };
             var dateEnterInBase = DateTime.Now.Date;
             AddDataEmployeeTimesheet = new ObservableCollection<WorkWindowModel>();
 
@@ -154,6 +158,7 @@ namespace EmployeeTimesheet.ViewModel
                     Fio = workEmployee.Fio,
                     ServiceNumbers = workEmployee.ServiceNumbers,
                     SumDayWork = selectedWorkModel.SumDayWork(workEmployee),
+                    SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee),
                     SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
                     SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee),
                     SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),

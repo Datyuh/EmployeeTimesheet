@@ -49,10 +49,10 @@ namespace EmployeeTimesheet.Model
             }
 
             _sevenDaysAWeek = _dateOfMonths
-                .Where(e => e.DayOfWeek != DayOfWeek.Saturday && e.DayOfWeek != DayOfWeek.Sunday)
+                .Where(e => e.DayOfWeek == DayOfWeek.Saturday && e.DayOfWeek == DayOfWeek.Sunday)
                 .Select(e => e.Date);
 
-            _total = _sevenDaysAWeek.Count() + _rowExcel;
+            _total = _dateOfMonths.Count() + _rowExcel;
         }
 
         private void AddColumnName()
@@ -62,7 +62,9 @@ namespace EmployeeTimesheet.Model
             var excelColumnServNumbrs = (Excel.Range)_objWorkSheet.Cells[2, 3];
             excelColumnServNumbrs.Value2 = "Таб. №";
             var excelTotal = (Excel.Range)_objWorkSheet.Cells[2, _total];
-            excelTotal.Value2 = "Итого отработанных дней";
+            excelTotal.Value2 = "Итого отраб. дней";
+            var excelTotalWeekends = (Excel.Range) _objWorkSheet.Cells[2, _total + 1];
+            excelTotalWeekends.Value2 = "Итого раб. в вых. дни";
         }
 
         private void AddRowDate()
@@ -84,17 +86,28 @@ namespace EmployeeTimesheet.Model
                     excelTotalStatus.Value2 = _allEmployeeTimesheets
                         .Select(e => e)
                         .Count(e => e.Status == "Явка" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+
+                    var excelTotalWeekendsStatus = (Excel.Range) _objWorkSheet.Cells[_columnExcelServNum, _total + 1];
+                    excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
+                        .Select(e => e)
+                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+
                     _columnExcelServNum++;
                     _columsExcel++;
                 }
 
-                foreach (var dateOfMonth in _sevenDaysAWeek)
+                foreach (var dateOfMonth in _dateOfMonths)
                 {
                     if (x != allEmployeeTimesheet.Employees.Fio)
                     {
                         var excelDate = (Excel.Range)_objWorkSheet.Cells[2, _rowExcel];
                         excelDate.NumberFormatLocal = "ДД.ММ.ГГГГ";
                         excelDate.Value2 = dateOfMonth.Date;
+                        if (dateOfMonth.DayOfWeek == DayOfWeek.Saturday || dateOfMonth.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
+                            excelStatusEmpl.Value2 = "В";
+                        }
                     }
 
                     if (dateOfMonth.Date == allEmployeeTimesheet.DateTimeAddData)

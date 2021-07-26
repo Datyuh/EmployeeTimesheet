@@ -5,7 +5,7 @@ namespace EmployeeTimesheet.Model
 {
     class WorkingExcelShortReportModel
     {
-        private int _columsExcel = 2;
+        private int _columsExcel = 3;
 
         private readonly Microsoft.Office.Interop.Excel.Application _objExcel;
         private readonly Microsoft.Office.Interop.Excel.Workbook _objWorkBook;
@@ -34,25 +34,29 @@ namespace EmployeeTimesheet.Model
             var excelColumnServNumbrs = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 3];
             excelColumnServNumbrs.Value2 = "Таб. №";
             var excelTotal = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 4];
-            excelTotal.Value2 = "Итого отработанных дней";
+            excelTotal.Value2 = "Итого отраб. дней";
+            var excelTotalWeekends = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 5];
+            excelTotalWeekends.Value2 = "Итого раб. в вых. дни";
         }
 
         private void AddRowDate()
         {
             foreach (var windowModel in _workWindowModel.Where(e => e.Employees.StatusUsers == "Работает").Select(e => e))
             {
-                var x = _objWorkSheet.Cells[_columsExcel, 2].Text;
-                if (x != windowModel.Employees.Fio)
-                    _columsExcel++;
-
                 var excelColumnFio = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 2];
                 excelColumnFio.Value2 = windowModel.Employees.Fio;
 
                 var excelServNomb = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 3];
                 excelServNomb.Value2 = windowModel.Employees.ServiceNumbers;
 
+
                 var excelTotalStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 4];
                 excelTotalStatus.Value2 = windowModel.SumDayWork;
+
+                var excelTotalWeekendsStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 5];
+                excelTotalWeekendsStatus.Value2 = windowModel.SumDayWorkWeekends;
+
+                _columsExcel++;
             }
         }
     }

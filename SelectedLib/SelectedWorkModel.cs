@@ -70,13 +70,24 @@ namespace SelectedLib
 
         public int SumDayVacation(Employee workEmployee)
         {
-            var ыumDayVacation = SelectedEmployeeTimesheet
+            var sumDayVacation = SelectedEmployeeTimesheet
                 .Where(e => e.Status == "Отпуск осн."
                             && e.Employees == workEmployee
                             && e.DateTimeAddData.Month == DateTime.Now.Month)
                 .Select(p => p.DateTimeAddData)
                 .Count();
-            return ыumDayVacation;
+            return sumDayVacation;
+        }
+
+        public int SumDayWorkWeekends(Employee workEmployee)
+        {
+            var sumDayWorkWeekends = SelectedEmployeeTimesheet
+                .Where(e => e.Status == "Работа в праз. и вых."
+                            && e.Employees == workEmployee
+                            && e.DateTimeAddData.Month == DateTime.Now.Month)
+                .Select(p => p.DateTimeAddData)
+                .Count();
+            return sumDayWorkWeekends;
         }
     }
 }

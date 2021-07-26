@@ -21,7 +21,7 @@ namespace EmployeeTimesheet.Model
         private readonly ObservableCollection<ApplicationContextData.EmployeeTimesheet> _allEmployeeTimesheets;
 
         public WorkingWithExcelModel(ObservableCollection<ApplicationContextData.EmployeeTimesheet> allEmployeeTimesheets)
-        { 
+        {
             _allEmployeeTimesheets = allEmployeeTimesheets;
             _objExcel = new Excel.Application();
 
@@ -73,24 +73,29 @@ namespace EmployeeTimesheet.Model
 
                 var x = _objWorkSheet.Cells[_columsExcel, 2].Text;
                 if (x != allEmployeeTimesheet.Employees.Fio)
+                {
+                    var excelColumnFio = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, 2];
+                    excelColumnFio.Value2 = allEmployeeTimesheet.Employees.Fio;
+
+                    var excelServNomb = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, 3];
+                    excelServNomb.Value2 = allEmployeeTimesheet.Employees.ServiceNumbers;
+
+                    var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total];
+                    excelTotalStatus.Value2 = _allEmployeeTimesheets
+                        .Select(e => e)
+                        .Count(e => e.Status == "Работал" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                    _columnExcelServNum++;
                     _columsExcel++;
-
-                var excelColumnFio = (Excel.Range)_objWorkSheet.Cells[_columsExcel, 2];
-                excelColumnFio.Value2 = allEmployeeTimesheet.Employees.Fio;
-
-                var excelServNomb = (Excel.Range)_objWorkSheet.Cells[_columsExcel, 3];
-                excelServNomb.Value2 = allEmployeeTimesheet.Employees.ServiceNumbers;
-
-                var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _total];
-                excelTotalStatus.Value2 = _allEmployeeTimesheets
-                    .Select(e => e)
-                    .Count(e => e.Status == "Работал" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                }
 
                 foreach (var dateOfMonth in _sevenDaysAWeek)
                 {
-                    var excelDate = (Excel.Range)_objWorkSheet.Cells[2, _rowExcel];
-                    excelDate.NumberFormatLocal = "ДД.ММ.ГГГГ";
-                    excelDate.Value2 = dateOfMonth.Date;
+                    if (x != allEmployeeTimesheet.Employees.Fio)
+                    {
+                        var excelDate = (Excel.Range)_objWorkSheet.Cells[2, _rowExcel];
+                        excelDate.NumberFormatLocal = "ДД.ММ.ГГГГ";
+                        excelDate.Value2 = dateOfMonth.Date;
+                    }
 
                     if (dateOfMonth.Date == allEmployeeTimesheet.DateTimeAddData)
                     {

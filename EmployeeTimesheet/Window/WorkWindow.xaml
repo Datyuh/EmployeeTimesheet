@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="EmployeeTimesheet.Window.WorkWindow"
     Title="Табель рабочего времени"
-    Width="900"
+    Width="1400"
     Height="500"
     Icon="../Image/Time_machine.ico"
     WindowStartupLocation="CenterScreen"
@@ -81,17 +81,17 @@
                 <DataGridTextColumn
                     Binding="{Binding SumDayOwnExpense}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во ОБС"
+                    Header="Кол-во ОБС дней"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding SumDayMedical}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во больнич"
+                    Header="Кол-во больничных дней"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding SumDayVacation}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во отпуска"
+                    Header="Кол-во отпускых дней"
                     IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
@@ -99,7 +99,7 @@
         <Grid Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.8*" />
+                <RowDefinition Height="1.3*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel
@@ -146,13 +146,29 @@
                     Margin="10,0,10,10"
                     VerticalAlignment="Bottom"
                     Command="{Binding AddDataInBaseCommand}"
-                    Content="Добавить данные" />
+                    Content="Добавить данные" >
+                    <Button.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#FFF3F3F3" Offset="1"/>
+                            <GradientStop Color="#FF96B3F1" Offset="0.169"/>
+                            <GradientStop Color="#FF60B6D6" Offset="0.627"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
 
                 <Button
                     Height="30"
                     Margin="10,0,10,10"
                     Command="{Binding GenerateReportCommand}"
-                    Content="Сформировать отчет" />
+                    Content="Сформировать отчет" >
+                    <Button.Background>
+                        <LinearGradientBrush >
+                            <GradientStop Color="#FFF3F3F3" Offset="1"/>
+                            <GradientStop Color="#FF8ECFB4" Offset="0.161"/>
+                            <GradientStop Color="#FFAADA55" Offset="0.627"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
 
                 <Button
                     Height="30"

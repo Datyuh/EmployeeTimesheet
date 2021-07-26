@@ -13,6 +13,7 @@ namespace EmployeeTimesheet.ViewModel
 {
     class AddUsersViewModel : BaseViewModel
     {
+        private bool _nullRowGrid;
         private readonly WorkWindowViewModel _workWindow;
         private ObservableCollection<AddUserModel> _addUsersInGrid = new();
         public ObservableCollection<AddUserModel> AddUsersInGrid { get => _addUsersInGrid; set => Set(ref _addUsersInGrid, value); }
@@ -60,13 +61,22 @@ namespace EmployeeTimesheet.ViewModel
                             StaticDataModel.ApplicationContext.SaveChanges();
                             _workWindow.AddDataEmployeeTimesheet.Clear();
                             _workWindow.AddEployeeTimessheet();
+                            _nullRowGrid = true;
                         }
                     }
                     else
-                        MessageBox.Show("Не все поля заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _nullRowGrid = false;
                 }
-                MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                switch (_nullRowGrid)
+                {
+                    case false:
+                        MessageBox.Show("Не все поля заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    default:
+                        MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                }
             }
             catch (FormatException)
             {

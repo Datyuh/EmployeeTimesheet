@@ -38,7 +38,7 @@ namespace SelectedLib
         public int SumDayWork(Employee workEmployee)
         {
             var sumDayWork = SelectedEmployeeTimesheet
-                .Where(e => e.Status == "Работал" 
+                .Where(e => e.Status == "Явка"
                             && e.Employees == workEmployee
                             && e.DateTimeAddData.Month == DateTime.Now.Month)
                 .Select(p => p.DateTimeAddData)
@@ -71,7 +71,7 @@ namespace SelectedLib
         public int SumDayVacation(Employee workEmployee)
         {
             var ыumDayVacation = SelectedEmployeeTimesheet
-                .Where(e => e.Status == "Отпуск"
+                .Where(e => e.Status == "Отпуск осн."
                             && e.Employees == workEmployee
                             && e.DateTimeAddData.Month == DateTime.Now.Month)
                 .Select(p => p.DateTimeAddData)

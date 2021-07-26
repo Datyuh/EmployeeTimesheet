@@ -15,6 +15,7 @@ namespace EmployeeTimesheet.ViewModel
 {
     public class WorkWindowViewModel : BaseViewModel
     {
+        private bool _haveDateInBase;
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
         public ObservableCollection<WorkWindowModel> AddDataEmployeeTimesheet
         {
@@ -41,6 +42,7 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnAddDataInBaseCommandExecuted(object p)
         {
+            
             if (AddDataEmployeeTimesheet.Select(x => x.ListReportCards).Contains(null))
             {
                 MessageBox.Show("Не установлен статус работкника\\ов\nна выбранную дату в графе \"Выбор статуса\"",
@@ -50,17 +52,36 @@ namespace EmployeeTimesheet.ViewModel
             {
                 foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
                 {
-                    ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
+                    var dateInBse = StaticDataModel.ApplicationContext.EmployeeTimesheets
+                        .Where(p => p.EmployeesId == items.Employees.Id).Select(p => p.DateTimeAddData).FirstOrDefault();
+                    if (items.DateEnterInBases.Date == dateInBse.Date)
                     {
-                        Status = items.ListReportCards,
-                        DateTimeAddData = items.DateEnterInBases,
-                        Employees = items.Employees,
-                    };
-                    StaticDataModel.ApplicationContext.EmployeeTimesheets.Add(employeeTimesheet);
-                    StaticDataModel.ApplicationContext.SaveChanges();
+                        _haveDateInBase = true;
+                        ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
+                        {
+                            Status = items.ListReportCards,
+                            DateTimeAddData = items.DateEnterInBases,
+                            Employees = items.Employees,
+                        };
+                        StaticDataModel.ApplicationContext.EmployeeTimesheets.Add(employeeTimesheet);
+                        StaticDataModel.ApplicationContext.SaveChanges();
+                    }
+                    else
+                        _haveDateInBase = false;
+                        
                 }
-                AddDataEmployeeTimesheet.Clear();
-                AddEployeeTimessheet();
+
+                switch (_haveDateInBase)
+                {
+                    case false:
+                        MessageBox.Show("Данные с такой датой занесены в таблицу",
+                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    default:
+                        AddDataEmployeeTimesheet.Clear();
+                        AddEployeeTimessheet();
+                        break;
+                }
             }
         }
 
@@ -120,7 +141,7 @@ namespace EmployeeTimesheet.ViewModel
         {
             SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             ObservableCollection<Employee> selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
-            var listReportCard = new List<string> { "Работал", "ОБС", "Больничный", "Отпуск" };
+            var listReportCard = new List<string> { "Явка", "ОБС", "Больничный", "Отпуск осн.", "Командировка", "Работа в праз. и вых.", "Праздн. дни" };
             var dateEnterInBase = DateTime.Now.Date;
             AddDataEmployeeTimesheet = new ObservableCollection<WorkWindowModel>();
 

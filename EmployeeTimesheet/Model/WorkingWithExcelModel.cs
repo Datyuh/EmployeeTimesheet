@@ -83,7 +83,7 @@ namespace EmployeeTimesheet.Model
                     var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total];
                     excelTotalStatus.Value2 = _allEmployeeTimesheets
                         .Select(e => e)
-                        .Count(e => e.Status == "Работал" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                        .Count(e => e.Status == "Явка" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
                     _columnExcelServNum++;
                     _columsExcel++;
                 }
@@ -102,10 +102,13 @@ namespace EmployeeTimesheet.Model
                         var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
                         excelStatusEmpl.Value2 = allEmployeeTimesheet.Status switch
                         {
-                            "Работал" => "+",
-                            "ОБС" => "Н",
+                            "Явка" => "Я",
+                            "ОБС" => "ДО",
                             "Больничный" => "Б",
-                            "Отпуск" => "О",
+                            "Отпуск осн." => "ОТ",
+                            "Командировка" => "К",
+                            "Работа в праз. и вых." => "РВ",
+                            "Праздн. дни" => "В",
                             _ => excelStatusEmpl.Value2
                         };
                     }

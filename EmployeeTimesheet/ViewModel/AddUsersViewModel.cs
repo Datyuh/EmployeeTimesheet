@@ -45,7 +45,6 @@ namespace EmployeeTimesheet.ViewModel
                             Fio = $"{item.LastName} {item.FirstName} {item.PatronymicName}",
                             ServiceNumbers = convertServiceNumbers,
                             StatusUsers = "Работает",
-                            NameKbId = StaticDataModel.NameKbFromMain.Id,
                             NameKbs = StaticDataModel.NameKbFromMain,
                         };
 

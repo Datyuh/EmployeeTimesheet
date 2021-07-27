@@ -15,7 +15,7 @@ namespace EmployeeTimesheet.ViewModel
         private void OnOutputFullReportCommandExecuted(object p)
         {
             var selectedEmployee = new SelectedForExcel(StaticDataModel.ApplicationContext);
-            _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime());
+            _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime(StaticDataModel.NameKbFromMain));
         }
 
         public ICommand OutputShortReportCommand { get; }

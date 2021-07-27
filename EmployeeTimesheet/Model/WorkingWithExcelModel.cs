@@ -25,7 +25,7 @@ namespace EmployeeTimesheet.Model
             _allEmployeeTimesheets = allEmployeeTimesheets;
             _objExcel = new Excel.Application();
 
-            //Книга.
+            //Книга
             _objWorkBook = _objExcel.Workbooks.Add(System.Reflection.Missing.Value);
             _objExcel.Visible = true;
             //Таблица.
@@ -69,7 +69,10 @@ namespace EmployeeTimesheet.Model
 
         private void AddRowDate()
         {
-            foreach (var allEmployeeTimesheet in _allEmployeeTimesheets.Where(e => e.Employees.StatusUsers == "Работает").Select(e => e))
+            var a = _allEmployeeTimesheets
+                .Where(e => e.Employees.StatusUsers == "Работает" && e.Status != null)
+                .Select(e => e);
+            foreach (var allEmployeeTimesheet in a)
             {
                 _rowExcel = 4;
 
@@ -84,13 +87,11 @@ namespace EmployeeTimesheet.Model
 
                     var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total];
                     excelTotalStatus.Value2 = _allEmployeeTimesheets
-                        .Select(e => e)
-                        .Count(e => e.Status == "Явка" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                        .Count(g => g.Status == "Явка" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
 
-                    var excelTotalWeekendsStatus = (Excel.Range) _objWorkSheet.Cells[_columnExcelServNum, _total + 1];
+                    var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
                     excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
-                        .Select(e => e)
-                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio && e.Status != null);
 
                     _columnExcelServNum++;
                     _columsExcel++;

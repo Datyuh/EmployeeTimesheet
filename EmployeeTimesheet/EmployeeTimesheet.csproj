@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\AddDataEmplTimeModel.cs" />
     <Compile Include="Model\AddUserModel.cs" />
     <Compile Include="Model\StaticDataModel.cs" />
     <Compile Include="Model\WorkingExcelShortReportModel.cs" />

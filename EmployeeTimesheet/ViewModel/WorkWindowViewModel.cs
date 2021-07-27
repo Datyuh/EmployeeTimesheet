@@ -42,42 +42,26 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnAddDataInBaseCommandExecuted(object p)
         {
-            
-            if (AddDataEmployeeTimesheet.Select(x => x.ListReportCards).Contains(null))
+            AddDataEmplTimeModel addDataEmplTimeModel = new(AddDataEmployeeTimesheet);
+            var searchNullInGrid = addDataEmplTimeModel.AddChoice;
+            if (searchNullInGrid is true)
             {
                 MessageBox.Show("Не установлен статус работкника\\ов\nна выбранную дату в графе \"Выбор статуса\"",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
-                {
-                    var dateInBse =
-                        StaticDataModel.ApplicationContext.EmployeeTimesheets
-                            .Where(x => x.EmployeesId == items.Employees.Id &&
-                                        x.DateTimeAddData == items.DateEnterInBases).Select(x => x.DateTimeAddData)
-                            .Contains(items.DateEnterInBases);
-                    if (dateInBse is false)
-                    {
-                        _haveDateInBase = true;
-                        ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
-                        {
-                            Status = items.ListReportCards,
-                            DateTimeAddData = items.DateEnterInBases,
-                            Employees = items.Employees,
-                        };
-                        StaticDataModel.ApplicationContext.EmployeeTimesheets.Add(employeeTimesheet);
-                        StaticDataModel.ApplicationContext.SaveChanges();
-                    }
-                    else
-                        _haveDateInBase = false;
-                }
+                var checkDateInBase = addDataEmplTimeModel.CheckDateInBase();
+                _haveDateInBase = checkDateInBase is true;
 
                 switch (_haveDateInBase)
                 {
                     case false:
-                        MessageBox.Show("Данные с такой датой занесены в таблицу",
-                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                        var addInBase =  MessageBox.Show("Данные с такой датой уже занесены в таблицу.\nИзменить статус?",
+                            "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        var canRedirect = addDataEmplTimeModel.CanRedirectDataInBase(addInBase);
+                        if (canRedirect is true)
+                            goto default;
                         break;
                     default:
                         MessageBox.Show("Данные занесены в таблицу",

@@ -13,9 +13,9 @@ namespace SelectedLib
             _dbContext = dbContext;
         }
 
-        public ObservableCollection<EmployeeTimesheet> SelectedDateEmplTime()
+        public ObservableCollection<EmployeeTimesheet> SelectedDateEmplTime(NameKB nameKb)
         {
-            var selectedDateEmplTime = _dbContext.EmployeeTimesheets.Select(x => x).OrderBy(x => x.EmployeesId);
+            var selectedDateEmplTime = _dbContext.EmployeeTimesheets.Select(x => x).Where(x => x.Employees.NameKbs.NameKbOgk == nameKb.NameKbOgk);
             return new ObservableCollection<EmployeeTimesheet>(selectedDateEmplTime);
         }
     }

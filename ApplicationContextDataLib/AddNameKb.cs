@@ -19,6 +19,7 @@ namespace ApplicationContextData
             NameKB nameKb7 = new NameKB { NameKbOgk = "КБ АПА", PasswordsKb = "zbodpt" };
             NameKB nameKb8 = new NameKB { NameKbOgk = "КБ Спец.ТА", PasswordsKb = "ndnwx3" };
             NameKB nameKb9 = new NameKB { NameKbOgk = "КБ КЗП", PasswordsKb = "bmkmnc" };
+            NameKB nameKb10 = new NameKB {NameKbOgk = "Главный констр.", PasswordsKb = "Po2cam"};
 
             application.NamesKb.Add(nameKb);
             application.NamesKb.Add(nameKb1);
@@ -30,6 +31,7 @@ namespace ApplicationContextData
             application.NamesKb.Add(nameKb7);
             application.NamesKb.Add(nameKb8);
             application.NamesKb.Add(nameKb9);
+            application.NamesKb.Add(nameKb10);
             application.SaveChanges();
         }
     }

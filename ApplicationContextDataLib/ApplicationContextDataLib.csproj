@@ -76,7 +76,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddNameKb.cs" />
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeTimesheet.cs" />

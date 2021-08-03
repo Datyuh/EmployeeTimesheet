@@ -9,7 +9,7 @@ namespace EmployeeTimesheet.Model
         public Employee Employees { get; set; }
         public string Fio { get; set; }
         public int ServiceNumbers { get; set; }
-        public int SumDayWork { get; set; }
+        public double SumDayWork { get; set; }
         public int SumDayOwnExpense { get; set; }
         public int SumDayMedical { get; set; }
         public int SumDayVacation { get; set; }

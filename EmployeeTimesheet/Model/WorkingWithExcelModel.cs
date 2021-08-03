@@ -79,6 +79,15 @@ namespace EmployeeTimesheet.Model
                 var x = _objWorkSheet.Cells[_columsExcel, 2].Text;
                 if (x != allEmployeeTimesheet.Employees.Fio)
                 {
+                    var sumDayWork = _allEmployeeTimesheets
+                        .Count(g => g.Status == "Явка" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
+                        && g.DateTimeAddData.Month == DateTime.Now.Month);
+                    var sumHalfDayWork = _allEmployeeTimesheets
+                        .Count(g => g.Status == "Пол. дня ОБС" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
+                        && g.DateTimeAddData.Month == DateTime.Now.Month) * 0.5;
+
+                    var sumDayWorks = sumDayWork + sumHalfDayWork;
+
                     var excelColumnFio = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, 2];
                     excelColumnFio.Value2 = allEmployeeTimesheet.Employees.Fio;
 
@@ -86,12 +95,12 @@ namespace EmployeeTimesheet.Model
                     excelServNomb.Value2 = allEmployeeTimesheet.Employees.ServiceNumbers;
 
                     var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total];
-                    excelTotalStatus.Value2 = _allEmployeeTimesheets
-                        .Count(g => g.Status == "Явка" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio);
+                    excelTotalStatus.Value2 = sumDayWorks;
 
                     var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
                     excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
-                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio && e.Status != null);
+                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
+                        && e.Status != null && e.DateTimeAddData.Month == DateTime.Now.Month);
 
                     _columnExcelServNum++;
                     _columsExcel++;
@@ -123,12 +132,22 @@ namespace EmployeeTimesheet.Model
                             "Командировка" => "К",
                             "Работа в праз. и вых." => "РВ",
                             "Праздн. дни" => "В",
+                            "Пол. дня ОБС" => "Пол. ДО",
                             _ => excelStatusEmpl.Value2
                         };
                     }
                     _rowExcel++;
                 }
             }
+
+            Excel.Range _excelCells1 =
+                _objWorkSheet.Range[$"B{_columnExcelServNum + 1}", $"O{_columnExcelServNum + 2}"].Cells;
+            _excelCells1.Merge(Type.Missing);
+            _excelCells1.Interior.Color = Excel.XlRgbColor.rgbPaleVioletRed;
+            _excelCells1.Value2 =
+                "Я => Явка,   ДО => ОБС,  Б =>   Больничный,  ОТ => Отпуск осн.,    К => Командировка\r\n" +
+                "   РВ => Работа в праз. и вых.,    В => Праздн. дни,    Пол. ДО => Пол. дня ОБС";
+
         }
     }
 }

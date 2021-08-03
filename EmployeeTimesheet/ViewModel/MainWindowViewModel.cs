@@ -35,7 +35,7 @@ namespace EmployeeTimesheet.ViewModel
                 StaticDataModel.NameKbFromMain = SelectedNameKb;
                 _selected.Log = SelectedNameKb.NameKbOgk;
                 _selected.Pas = SelectTextPassword;
-                WorkWindow workWindow = new();
+                WorkWindow workWindow = new(NameKbOgkSource, SelectedNameKb.NameKbOgk);
                 if (_selected.PasswordKbs is true)
                 {
                     workWindow.Show();
@@ -50,8 +50,8 @@ namespace EmployeeTimesheet.ViewModel
 
         public MainWindowViewModel()
         {
-            AddNameKb addStart = new();
-            addStart.AddNameKbAndPass();
+            //AddNameKb addStart = new();
+            //addStart.AddNameKbAndPass();
             GetInWorkWindowCommand =
                 new LambdaCommand(OnGetInWorkWindowCommandExecuted, CanGetInWorkWindowCommandExecute);
             NameKbOgkSource = _selected.SelectedNameKbOgks;

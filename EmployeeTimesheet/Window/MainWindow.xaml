@@ -66,7 +66,7 @@
                 VerticalAlignment="Center"
                 Command="{Binding GetInWorkWindowCommand}"
                 Content="Вход"
-                IsDefault="True"/>
+                IsDefault="True" />
         </StackPanel>
 
         <TextBlock

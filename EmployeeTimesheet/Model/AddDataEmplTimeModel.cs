@@ -65,15 +65,19 @@ namespace EmployeeTimesheet.Model
         {
             foreach (WorkWindowModel items in _addDataEmployeeTimesheet)
             {
-                var employee = _dbContext.EmployeeTimesheets
-                        .Select(x => x)
-                        .Where(x => x.EmployeesId == items.Employees.Id 
-                                    && x.DateTimeAddData == items.DateEnterInBases);
-                foreach (var status in employee)
+                if (items.ListReportCards != null)
                 {
-                    status.Status = items.ListReportCards;
+                    var employee = _dbContext.EmployeeTimesheets
+                        .Select(x => x)
+                        .Where(x => x.EmployeesId == items.Employees.Id
+                                    && x.DateTimeAddData == items.DateEnterInBases);
+                    foreach (var status in employee)
+                    {
+                        status.Status = items.ListReportCards;
+                    }
+
+                    _dbContext.SaveChanges();
                 }
-                _dbContext.SaveChanges();
             }
             return true;
         }

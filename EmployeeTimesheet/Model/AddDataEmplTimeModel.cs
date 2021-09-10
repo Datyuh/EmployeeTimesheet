@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using ApplicationContextData;
+using System;
 
 namespace EmployeeTimesheet.Model
 {
@@ -34,7 +35,7 @@ namespace EmployeeTimesheet.Model
                         .Contains(items.DateEnterInBases);
                 if (dateInBse is false)
                 {
-                    return AddDataInBase(); 
+                    return AddDataInBase();
                 }
             }
             return false;
@@ -42,7 +43,7 @@ namespace EmployeeTimesheet.Model
 
         private bool AddDataInBase()
         {
-            foreach (WorkWindowModel items in _addDataEmployeeTimesheet)
+            foreach (WorkWindowModel items in _addDataEmployeeTimesheet.Where(p => p.ListReportCards != null && p.DateEnterInBases != DateTime.Now))
             {
                 ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
                 {

@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseModelModuleLib", "BaseM
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupEmployeeTimesheet", "SetupEmployeeTimesheet\SetupEmployeeTimesheet.vdproj", "{2F3E0093-6838-411A-9896-20200B67AD3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTimesheet.DAL", "EmployeeTimesheet.Entities\EmployeeTimesheet.DAL.csproj", "{9E2E46AD-7B41-469D-B272-A49E956C377A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTimesheet.BLL", "EmployeeTimesheet.BLL\EmployeeTimesheet.BLL.csproj", "{73BA0780-A4E4-4D3D-A63B-2E99F412D068}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{B7E234D3-6E22-44B2-9848-B5CAE5C58AA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F3E0093-6838-411A-9896-20200B67AD3A}.Debug|Any CPU.ActiveCfg = Debug
 		{2F3E0093-6838-411A-9896-20200B67AD3A}.Release|Any CPU.ActiveCfg = Release
+		{9E2E46AD-7B41-469D-B272-A49E956C377A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2E46AD-7B41-469D-B272-A49E956C377A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2E46AD-7B41-469D-B272-A49E956C377A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2E46AD-7B41-469D-B272-A49E956C377A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73BA0780-A4E4-4D3D-A63B-2E99F412D068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73BA0780-A4E4-4D3D-A63B-2E99F412D068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73BA0780-A4E4-4D3D-A63B-2E99F412D068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73BA0780-A4E4-4D3D-A63B-2E99F412D068}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

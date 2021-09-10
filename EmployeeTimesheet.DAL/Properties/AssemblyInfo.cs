@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
-[assembly: AssemblyTitle("ApplicationContextData")]
+[assembly: AssemblyTitle("EmployeeTimesheet.DAL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ApplicationContextData")]
+[assembly: AssemblyProduct("EmployeeTimesheet.DAL")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("c1e7e962-84ef-4e72-a2f8-e709dd136f23")]
+[assembly: Guid("c591d7e9-ea5c-4cdd-b1bb-1ef65f09aec3")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //

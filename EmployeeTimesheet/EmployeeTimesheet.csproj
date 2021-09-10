@@ -14,6 +14,9 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,11 +29,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,6 +55,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Image\Time_machine.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -174,13 +177,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationContextDataLib\ApplicationContextDataLib.csproj">
-      <Project>{c1e7e962-84ef-4e72-a2f8-e709dd136f23}</Project>
-      <Name>ApplicationContextDataLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BaseModelModuleLib\BaseModelModuleLib.csproj">
       <Project>{b7e234d3-6e22-44b2-9848-b5cae5c58aa0}</Project>
       <Name>BaseModelModuleLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmployeeTimesheet.BLL\EmployeeTimesheet.BLL.csproj">
+      <Project>{4070c663-9d34-4eda-80ff-91e64e1e6f0d}</Project>
+      <Name>EmployeeTimesheet.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\SelectedLib\SelectedLib.csproj">
       <Project>{fcddd813-93b8-457d-b786-97088c8a89a5}</Project>
@@ -205,5 +208,6 @@
   <ItemGroup>
     <Resource Include="Image\Time_machine.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

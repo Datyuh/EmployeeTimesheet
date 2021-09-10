@@ -6,7 +6,7 @@ namespace EmployeeTimesheet.Model
 {
     public class WorkWindowModel
     {
-        public Employee Employees { get; set; }
+        public EmployeeDTO EmployeesDTO { get; set; }
         public string Fio { get; set; }
         public int ServiceNumbers { get; set; }
         public double SumDayWork { get; set; }

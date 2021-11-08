@@ -20,7 +20,7 @@ namespace EmployeeTimesheet.Window
         private async void TextBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Attention.Text = "При отсутствии пароля обратиться к системному администратору!!!";
-            await Task.Delay(10000);
+            await Task.Delay(20000);
             Attention.Text = null;
         }
     }

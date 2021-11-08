@@ -49,7 +49,7 @@ namespace EmployeeTimesheet.Model
             }
 
             _sevenDaysAWeek = _dateOfMonths
-                .Where(e => e.DayOfWeek == DayOfWeek.Saturday && e.DayOfWeek == DayOfWeek.Sunday)
+                .Where(e => e.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
                 .Select(e => e.Date);
 
             _total = _dateOfMonths.Count() + _rowExcel;
@@ -85,6 +85,10 @@ namespace EmployeeTimesheet.Model
                     var sumHalfDayWork = _allEmployeeTimesheets
                         .Count(g => g.Status == "Пол. дня ОБС" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
                         && g.DateTimeAddData.Month == DateTime.Now.Month) * 0.5;
+                    var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
+                    excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
+                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio
+                                                                        && e.Status != null && e.DateTimeAddData.Month == DateTime.Now.Month);
 
                     var sumDayWorks = sumDayWork + sumHalfDayWork;
 
@@ -97,11 +101,6 @@ namespace EmployeeTimesheet.Model
                     var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total];
                     excelTotalStatus.Value2 = sumDayWorks;
 
-                    var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
-                    excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
-                        .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
-                        && e.Status != null && e.DateTimeAddData.Month == DateTime.Now.Month);
-
                     _columnExcelServNum++;
                     _columsExcel++;
                 }
@@ -113,13 +112,21 @@ namespace EmployeeTimesheet.Model
                         var excelDate = (Excel.Range)_objWorkSheet.Cells[2, _rowExcel];
                         excelDate.NumberFormatLocal = "ДД.ММ.ГГГГ";
                         excelDate.Value2 = dateOfMonth.Date;
-                        if (dateOfMonth.DayOfWeek == DayOfWeek.Saturday || dateOfMonth.DayOfWeek == DayOfWeek.Sunday)
+                        if (dateOfMonth.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
                         {
                             var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
                             excelStatusEmpl.Value2 = "В";
                         }
                     }
 
+                    /*
+                     Должно приходить с базы:
+                        "Явка, ОБС, Пол. дня ОБС, Больничный,
+                        Отпуск осн., Командировка,
+                        Работа в праз. и вых., Праздн. и вых. дни"
+                    для изменения в switch. 
+                    Эти данные добовляются в combobox в WorkWindowViewModel в методе AddEployeeTimessheet
+                    */
                     if (dateOfMonth.Date == allEmployeeTimesheet.DateTimeAddData)
                     {
                         var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
@@ -131,7 +138,7 @@ namespace EmployeeTimesheet.Model
                             "Отпуск осн." => "ОТ",
                             "Командировка" => "К",
                             "Работа в праз. и вых." => "РВ",
-                            "Праздн. дни" => "В",
+                            "Праздн. и вых. дни" => "В",
                             "Пол. дня ОБС" => "Пол. ДО",
                             _ => excelStatusEmpl.Value2
                         };
@@ -140,13 +147,13 @@ namespace EmployeeTimesheet.Model
                 }
             }
 
-            Excel.Range _excelCells1 =
+            Excel.Range excelCells1 =
                 _objWorkSheet.Range[$"B{_columnExcelServNum + 1}", $"O{_columnExcelServNum + 2}"].Cells;
-            _excelCells1.Merge(Type.Missing);
-            _excelCells1.Interior.Color = Excel.XlRgbColor.rgbPaleVioletRed;
-            _excelCells1.Value2 =
+            excelCells1.Merge(Type.Missing);
+            excelCells1.Interior.Color = Excel.XlRgbColor.rgbPaleVioletRed;
+            excelCells1.Value2 =
                 "Я => Явка,   ДО => ОБС,  Б =>   Больничный,  ОТ => Отпуск осн.,    К => Командировка\r\n" +
-                "   РВ => Работа в праз. и вых.,    В => Праздн. дни,    Пол. ДО => Пол. дня ОБС";
+                "   РВ => Работа в праз. и вых.,    В => Праздн. и вых. дни,    Пол. ДО => Пол. дня ОБС";
 
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using BaseModelModule.Commands;
 using EmployeeTimesheet.Model;
@@ -8,12 +9,15 @@ namespace EmployeeTimesheet.ViewModel
 {
     class ReportOutputViewModel
     {
+        public Action CloseAction { get; set; }
+
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
         public ICommand OutputFullReportCommand { get; }
         private bool CanOutputFullReportCommandExecute(object p) => true;
 
         private void OnOutputFullReportCommandExecuted(object p)
         {
+            CloseAction();
             var selectedEmployee = new SelectedForExcel(StaticDataModel.ApplicationContext);
             _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime(StaticDataModel.NameKbFromMain));
         }
@@ -23,6 +27,7 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnOutputShortReportCommandExecuted(object p)
         {
+            CloseAction();
             _ = new WorkingExcelShortReportModel(_addDataEmployeeTimesheet);
         }
 

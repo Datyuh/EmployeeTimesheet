@@ -12,7 +12,9 @@ namespace EmployeeTimesheet.Window
         public ReportOutputWindow(ObservableCollection<WorkWindowModel> addDataEmployeeTimesheet)
         {
             InitializeComponent();
-            DataContext = new ReportOutputViewModel(addDataEmployeeTimesheet);
+            ReportOutputViewModel reportOutputViewModel = new(addDataEmployeeTimesheet);
+            DataContext = reportOutputViewModel;
+            reportOutputViewModel.CloseAction = Close;
         }
     }
 }

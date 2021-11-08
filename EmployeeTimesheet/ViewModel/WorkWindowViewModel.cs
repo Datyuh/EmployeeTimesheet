@@ -176,6 +176,11 @@ namespace EmployeeTimesheet.ViewModel
                 _selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
                 var listReportCard = new List<string>
                 {
+                    /*
+                        Если данные поменялись, то их необходимо изменить 
+                        в классе WorkingWithExcelModel 
+                        в методе AddRowDate
+                     */
                     "Явка", "ОБС", "Пол. дня ОБС", "Больничный",
                     "Отпуск осн.", "Командировка",
                     "Работа в праз. и вых.", "Праздн. и вых. дни"

@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace EmployeeTimesheet.Model
 {
@@ -41,23 +40,23 @@ namespace EmployeeTimesheet.Model
 
         private void AddRowDate()
         {
-            foreach (var windowModel in _workWindowModel.Where(e => e.Employees.StatusUsers == "Работает").Select(e => e))
-            {
-                var excelColumnFio = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 2];
-                excelColumnFio.Value2 = windowModel.Employees.Fio;
+            //foreach (var windowModel in _workWindowModel.Where(e => e.Employees.StatusUsers == "Работает").Select(e => e))
+            //{
+            //    var excelColumnFio = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 2];
+            //    excelColumnFio.Value2 = windowModel.Employees.Fio;
 
-                var excelServNomb = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 3];
-                excelServNomb.Value2 = windowModel.Employees.ServiceNumbers;
+            //    var excelServNomb = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 3];
+            //    excelServNomb.Value2 = windowModel.Employees.ServiceNumbers;
 
 
-                var excelTotalStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 4];
-                excelTotalStatus.Value2 = windowModel.SumDayWork;
+            //    var excelTotalStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 4];
+            //    excelTotalStatus.Value2 = windowModel.SumDayWork;
 
-                var excelTotalWeekendsStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 5];
-                excelTotalWeekendsStatus.Value2 = windowModel.SumDayWorkWeekends;
+            //    var excelTotalWeekendsStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 5];
+            //    excelTotalWeekendsStatus.Value2 = windowModel.SumDayWorkWeekends;
 
-                _columsExcel++;
-            }
+            //    _columsExcel++;
+            //}
         }
     }
 }

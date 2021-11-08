@@ -1,19 +1,27 @@
-﻿using EmployeeTimesheet.DAL.Interfaces;
+﻿using Autofac;
+using EmployeeTimesheet.DAL.EF;
+using EmployeeTimesheet.DAL.Interfaces;
 using EmployeeTimesheet.DAL.Repositories;
-using Ninject.Modules;
 
 namespace EmployeeTimesheet.BLL.Infrastructure
 {
-    public class ServiceModule : NinjectModule
+    public class ServiceModule
     {
-        private readonly string _connectionString;
+        private static string _connectionString;
+        private static IContainer Container { get; set; }
+
         public ServiceModule(string connection)
         {
             _connectionString = connection;
         }
-        public override void Load()
+
+        private static void ConfigureContainer()
         {
-            Bind<IUnitOfWork>().To<EFUnitOfWork>().WithConstructorArgument(_connectionString);
-        }
+            var builder = new ContainerBuilder();
+            builder.RegisterType<IUnitOfWork>().As<EFUnitOfWork>().WithParameter("connectionString", new EmployeeTimesheetContext(_connectionString));
+            Container = builder.Build();
+        } 
+
+
     }
 }

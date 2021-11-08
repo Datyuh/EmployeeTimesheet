@@ -3,7 +3,7 @@ using EmployeeTimesheet.BLL.DTO;
 
 namespace EmployeeTimesheet.BLL.Interfaces
 {
-    interface IEmployeeService
+    public interface IEmployeeService
     {
         void MakeEmployee(EmployeeDTO employeeDto);
         NameKBDTO GetNameKB(int? id);

@@ -57,6 +57,7 @@
     <Compile Include="Entities\EmployeeEntity.cs" />
     <Compile Include="Entities\EmployeeTimesheetEntity.cs" />
     <Compile Include="Entities\NameKBEntity.cs" />
+    <Compile Include="Interfaces\INameKbEntityRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,9 +67,8 @@
     <Compile Include="Repositories\NameKBEntityReposotory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Repositories\App.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

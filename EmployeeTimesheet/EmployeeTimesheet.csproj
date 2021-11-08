@@ -60,6 +60,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -71,8 +74,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -93,13 +98,14 @@
     </ApplicationDefinition>
     <Compile Include="Model\AddDataEmplTimeModel.cs" />
     <Compile Include="Model\AddUserModel.cs" />
-    <Compile Include="Model\StaticDataModel.cs" />
+    <Compile Include="Model\NameKbModel.cs" />
     <Compile Include="Model\WorkingExcelShortReportModel.cs" />
     <Compile Include="Model\WorkingWithExcelModel.cs" />
     <Compile Include="Model\WorkWindowModel.cs" />
     <Compile Include="Resources\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\NameKbModule.cs" />
     <Compile Include="ViewModel\AddUsersViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ReportOutputViewModel.cs" />
@@ -184,10 +190,6 @@
     <ProjectReference Include="..\EmployeeTimesheet.BLL\EmployeeTimesheet.BLL.csproj">
       <Project>{4070c663-9d34-4eda-80ff-91e64e1e6f0d}</Project>
       <Name>EmployeeTimesheet.BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SelectedLib\SelectedLib.csproj">
-      <Project>{fcddd813-93b8-457d-b786-97088c8a89a5}</Project>
-      <Name>SelectedLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

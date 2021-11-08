@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ApplicationContextData;
+using EmployeeTimesheet.Model;
 using EmployeeTimesheet.ViewModel;
 
 namespace EmployeeTimesheet.Window
@@ -11,7 +11,7 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class WorkWindow
     {
-        public WorkWindow(ObservableCollection<NameKB> nameKbs, string selectedNameKb)
+        public WorkWindow(ObservableCollection<NameKbModel> nameKbs, string selectedNameKb)
         {
             InitializeComponent();
             DataContext = new WorkWindowViewModel(nameKbs, selectedNameKb);

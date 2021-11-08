@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using EmployeeTimesheet.BLL.Services;
 using EmployeeTimesheet.ViewModel;
 
 namespace EmployeeTimesheet.Window
@@ -16,7 +17,6 @@ namespace EmployeeTimesheet.Window
             DataContext = mainWindowViewModel;
             mainWindowViewModel.CloseAction = Close;
         }
-
         private async void TextBox_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Attention.Text = "При отсутствии пароля обратиться к системному администратору!!!";

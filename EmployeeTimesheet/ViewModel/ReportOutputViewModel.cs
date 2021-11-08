@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using BaseModelModule.Commands;
 using EmployeeTimesheet.Model;
-using SelectedLib;
 
 namespace EmployeeTimesheet.ViewModel
 {
@@ -14,8 +13,7 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnOutputFullReportCommandExecuted(object p)
         {
-            var selectedEmployee = new SelectedForExcel(StaticDataModel.ApplicationContext);
-            _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime(StaticDataModel.NameKbFromMain));
+           
         }
 
         public ICommand OutputShortReportCommand { get; }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using ApplicationContextData;
 using BaseModelModule.Commands;
 using BaseModelModule.ViewsModel.Base;
 using EmployeeTimesheet.Model;
 using EmployeeTimesheet.Window;
-using SelectedLib;
 
 namespace EmployeeTimesheet.ViewModel
 {
@@ -17,7 +12,6 @@ namespace EmployeeTimesheet.ViewModel
     {
         private bool _haveDateInBase;
         private string _selectedNameKb;
-        private ObservableCollection<Employee> _selectedWorkEmployee;
 
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
         public ObservableCollection<WorkWindowModel> AddDataEmployeeTimesheet
@@ -32,11 +26,11 @@ namespace EmployeeTimesheet.ViewModel
         private bool _forChiefDesignerEnabled = false;
         public bool ForChiefDesignerEnabled { get => _forChiefDesignerEnabled; set => Set(ref _forChiefDesignerEnabled, value); }
 
-        private ObservableCollection<NameKB> _listNameKb;
-        public ObservableCollection<NameKB> ListNameKb { get => _listNameKb; set => Set(ref _listNameKb, value); }
+        private ObservableCollection<NameKbModel> _listNameKb;
+        public ObservableCollection<NameKbModel> ListNameKb { get => _listNameKb; set => Set(ref _listNameKb, value); }
 
-        private NameKB _selectedNameKbs;
-        public NameKB SelectedNameKbs { get => _selectedNameKbs; set => Set(ref _selectedNameKbs, value); }
+        private NameKbModel _selectedNameKbs;
+        public NameKbModel SelectedNameKbs { get => _selectedNameKbs; set => Set(ref _selectedNameKbs, value); }
 
         #region Command
 
@@ -63,7 +57,7 @@ namespace EmployeeTimesheet.ViewModel
         {
             AddDataEmplTimeModel addDataEmplTimeModel = new(AddDataEmployeeTimesheet);
             var searchNullInGrid = addDataEmplTimeModel.AddChoice;
-            var nowDateInBase = new SelectedWorkModel(StaticDataModel.ApplicationContext).NowDateInBase().Contains(DateTime.Now.Date);
+            var nowDateInBase = false;
             if (searchNullInGrid is true && nowDateInBase is false)
             {
                 MessageBox.Show("Не установлен статус работкника\\ов\nна выбранную дату в графе \"Выбор статуса\"",
@@ -105,9 +99,7 @@ namespace EmployeeTimesheet.ViewModel
             {
                 if (items.UpdateUserStatusCheckBox is true)
                 {
-                    Employee employee = StaticDataModel.ApplicationContext.Employees.Find(items.Employees.Id);
-                    if (employee != null) employee.StatusUsers = "Уволен";
-                    StaticDataModel.ApplicationContext.SaveChanges();
+                   
                 }
             }
             AddDataEmployeeTimesheet.Clear();
@@ -121,7 +113,7 @@ namespace EmployeeTimesheet.ViewModel
         {
             if (_selectedNameKb == "Главный констр")
             {
-                StaticDataModel.NameKbFromMain = SelectedNameKbs;
+               
             }
             ReportOutputWindow reportOutput = new(AddDataEmployeeTimesheet);
             reportOutput.ShowDialog();
@@ -150,7 +142,7 @@ namespace EmployeeTimesheet.ViewModel
 
         #endregion
 
-        public WorkWindowViewModel(ObservableCollection<NameKB> nameKbs, string selectedNameKb)
+        public WorkWindowViewModel(ObservableCollection<NameKbModel> nameKbs, string selectedNameKb)
         {
             ListNameKb = nameKbs;
             _selectedNameKb = selectedNameKb;
@@ -165,45 +157,45 @@ namespace EmployeeTimesheet.ViewModel
 
         public void AddEployeeTimessheet()
         {
-            if (_selectedNameKb == "Главный констр")
-            {
-                ForChiefDesignerEnabled = true;
-                StaticDataModel.NameKbFromMain = SelectedNameKbs;
-            }
-            SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
-            if (StaticDataModel.NameKbFromMain != null)
-            {
-                _selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
-                var listReportCard = new List<string>
-                {
-                    "Явка", "ОБС", "Пол. дня ОБС", "Больничный",
-                    "Отпуск осн.", "Командировка",
-                    "Работа в праз. и вых.", "Праздн. и вых. дни"
-                };
+            //if (_selectedNameKb == "Главный констр")
+            //{
+            //    ForChiefDesignerEnabled = true;
+            //    StaticDataModel.NameKbFromMain = SelectedNameKbs;
+            //}
+            //SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
+            //if (StaticDataModel.NameKbFromMain != null)
+            //{
+            //    _selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);
+            //    var listReportCard = new List<string>
+            //    {
+            //        "Явка", "ОБС", "Пол. дня ОБС", "Больничный",
+            //        "Отпуск осн.", "Командировка",
+            //        "Работа в праз. и вых.", "Праздн. и вых. дни"
+            //    };
 
-                var dateEnterInBase = DateTime.Now.Date;
-                AddDataEmployeeTimesheet = new ObservableCollection<WorkWindowModel>();
+            //    var dateEnterInBase = DateTime.Now.Date;
+            //    AddDataEmployeeTimesheet = new ObservableCollection<WorkWindowModel>();
 
-                foreach (Employee workEmployee in _selectedWorkEmployee
-                    .Select(p => p).Where(p => p.StatusUsers.Contains("Работает")))
-                {
-                    WorkWindowModel workWindowModel = new()
-                    {
-                        Employees = workEmployee,
-                        Fio = workEmployee.Fio,
-                        ServiceNumbers = workEmployee.ServiceNumbers,
-                        SumDayWork = selectedWorkModel.SumDayWork(workEmployee) +
-                                     selectedWorkModel.SumHalfDayWork(workEmployee),
-                        SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee),
-                        SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
-                        SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee),
-                        SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),
-                        ListReportCard = listReportCard,
-                        DateEnterInBases = dateEnterInBase
-                    };
-                    AddDataEmployeeTimesheet.Add(workWindowModel);
-                }
-            }
+            //    foreach (Employee workEmployee in _selectedWorkEmployee
+            //        .Select(p => p).Where(p => p.StatusUsers.Contains("Работает")))
+            //    {
+            //        WorkWindowModel workWindowModel = new()
+            //        {
+            //            Employees = workEmployee,
+            //            Fio = workEmployee.Fio,
+            //            ServiceNumbers = workEmployee.ServiceNumbers,
+            //            SumDayWork = selectedWorkModel.SumDayWork(workEmployee) +
+            //                         selectedWorkModel.SumHalfDayWork(workEmployee),
+            //            SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee),
+            //            SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
+            //            SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee),
+            //            SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),
+            //            ListReportCard = listReportCard,
+            //            DateEnterInBases = dateEnterInBase
+            //        };
+            //        AddDataEmployeeTimesheet.Add(workWindowModel);
+            //    }
+            //}
         }
     }
 }

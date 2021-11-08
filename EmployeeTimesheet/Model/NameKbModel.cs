@@ -1,6 +1,6 @@
-﻿namespace EmployeeTimesheet.BLL.DTO
+﻿namespace EmployeeTimesheet.Model
 {
-    public class NameKBDTO
+    public class NameKbModel
     {
         public int Id { get; set; }
         public string NameKbOgk { get; set; }

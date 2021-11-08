@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
-using ApplicationContextData;
 
 namespace SelectedLib
 {

@@ -19,11 +19,15 @@ namespace EmployeeTimesheet.Model
         private readonly Excel.Workbook _objWorkBook;
         private readonly Excel.Worksheet _objWorkSheet;
         private readonly ObservableCollection<ApplicationContextData.EmployeeTimesheet> _allEmployeeTimesheets;
+        private readonly int _nameMonthChoice;
+        private readonly int _nameYearSelect;
 
-        public WorkingWithExcelModel(ObservableCollection<ApplicationContextData.EmployeeTimesheet> allEmployeeTimesheets)
+        public WorkingWithExcelModel(ObservableCollection<ApplicationContextData.EmployeeTimesheet> allEmployeeTimesheets, int nameMonthChoice, int nameYearSelect)
         {
             _allEmployeeTimesheets = allEmployeeTimesheets;
             _objExcel = new Excel.Application();
+            _nameMonthChoice = nameMonthChoice;
+            _nameYearSelect = nameYearSelect;
 
             //Книга
             _objWorkBook = _objExcel.Workbooks.Add(System.Reflection.Missing.Value);
@@ -38,8 +42,8 @@ namespace EmployeeTimesheet.Model
 
         private void DateOfMonthNow()
         {
-            var year = DateTime.Now.Year;
-            var month = DateTime.Now.Month;
+            var year = _nameYearSelect;
+            var month = _nameMonthChoice;
             var startDay = new DateTime(year, month, 1);
             var endDay = startDay.AddMonths(1);
 
@@ -81,14 +85,14 @@ namespace EmployeeTimesheet.Model
                 {
                     var sumDayWork = _allEmployeeTimesheets
                         .Count(g => g.Status == "Явка" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
-                        && g.DateTimeAddData.Month == DateTime.Now.Month);
+                        && g.DateTimeAddData.Month == _nameMonthChoice);
                     var sumHalfDayWork = _allEmployeeTimesheets
                         .Count(g => g.Status == "Пол. дня ОБС" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
-                        && g.DateTimeAddData.Month == DateTime.Now.Month) * 0.5;
+                        && g.DateTimeAddData.Month == _nameMonthChoice) * 0.5;
                     var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
                     excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
                         .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio
-                                                                        && e.Status != null && e.DateTimeAddData.Month == DateTime.Now.Month);
+                                                                        && e.Status != null && e.DateTimeAddData.Month == _nameMonthChoice);
 
                     var sumDayWorks = sumDayWork + sumHalfDayWork;
 

@@ -11,12 +11,14 @@ namespace EmployeeTimesheet.Model
         private readonly Microsoft.Office.Interop.Excel.Workbook _objWorkBook;
         private readonly Microsoft.Office.Interop.Excel.Worksheet _objWorkSheet;
         private readonly ObservableCollection<WorkWindowModel> _workWindowModel;
+        private readonly int _nameMonthChoice;
 
-        public WorkingExcelShortReportModel(ObservableCollection<WorkWindowModel> workWindowModel)
+        public WorkingExcelShortReportModel(ObservableCollection<WorkWindowModel> workWindowModel, int nameMonthChoice)
         {
             _workWindowModel = workWindowModel;
             _objExcel = new Microsoft.Office.Interop.Excel.Application();
-
+            _nameMonthChoice = nameMonthChoice;
+            
             //Книга.
             _objWorkBook = _objExcel.Workbooks.Add(System.Reflection.Missing.Value);
             _objExcel.Visible = true;

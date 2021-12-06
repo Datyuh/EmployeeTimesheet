@@ -61,7 +61,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Дата">
+                <DataGridTemplateColumn Header="Дата внесения">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <DatePicker
@@ -99,11 +99,57 @@
         <Grid Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.3*" />
+                <RowDefinition Height="1.6*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Vertical">
+                <StackPanel
+                    Height="60"
+                    Margin="10,10,10,0"
+                    Orientation="Vertical">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Выбор даты для отчета" />
+
+                    <StackPanel
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Margin="10,0,5,0"
+                            FontSize="14"
+                            Text="Месяц" />
+                        <ComboBox
+                            Width="100"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="14"
+                            ItemsSource="{Binding NameMonthAdd, Mode=OneWay}"
+                            SelectedIndex="{Binding NameMonthChoice, Mode=OneWay}"
+                            SelectedItem="{Binding NameMonthSelect, Mode=OneWayToSource}" />
+
+                        <TextBlock
+                            Margin="10,0,5,0"
+                            FontSize="14"
+                            Text="Год" />
+                        <ComboBox
+                            Width="70"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="14"
+                            ItemsSource="{Binding NameYearAdd, Mode=OneWay}"
+                            SelectedIndex="{Binding NameYearChoice, Mode=OneWay}"
+                            SelectedItem="{Binding NameYearSelect, Mode=OneWayToSource}" />
+                    </StackPanel>
+                </StackPanel>
                 <TextBlock
                     Margin="10,5,10,10"
                     HorizontalAlignment="Center"
@@ -160,6 +206,7 @@
                     VerticalAlignment="Bottom"
                     Command="{Binding UpdateUserStatusCommand}"
                     Content="Обновить статус" />
+                <Border BorderBrush="DarkGray" BorderThickness="1" />
             </StackPanel>
 
             <StackPanel

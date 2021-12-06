@@ -17,10 +17,10 @@ namespace EmployeeTimesheet.Window
             DataContext = new WorkWindowViewModel(nameKbs, selectedNameKb);
         }
 
-        private void CheckBox_MouseEnter(object sender, MouseEventArgs e)
+        private async void CheckBox_MouseEnter(object sender, MouseEventArgs e)
         {
             TextWarning.Text = "Обновляет статус работника отмеченый галочкой в таблице с работает на уволен. После нажатия кнопи обновить даный работник больше не будет показываться в таблице";
-            Task.Delay(10000);
+            await Task.Delay(10000);
             TextWarning.Text = null;
         }
     }

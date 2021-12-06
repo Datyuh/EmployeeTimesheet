@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -25,6 +26,30 @@ namespace EmployeeTimesheet.ViewModel
             get => _addDataEmployeeTimesheet;
             set => Set(ref _addDataEmployeeTimesheet, value);
         }
+
+        #region WorkWithChoiceData
+
+        private string[] _nameMonthAdd;
+        public string[] NameMonthAdd { get => _nameMonthAdd; set => Set(ref _nameMonthAdd, value); }
+
+        private string _nameMonthSelect;
+        public string NameMonthSelect { get => _nameMonthSelect; set => Set(ref _nameMonthSelect, value); }
+
+        private int _nameMonthChoice;
+        public int NameMonthChoice { get => _nameMonthChoice; set => Set(ref _nameMonthChoice, value); }
+
+        private int[] _nameYearAdd;
+        public int[] NameYearAdd { get => _nameYearAdd; set => Set(ref _nameYearAdd, value); }
+
+        private int _nameYearSelect;
+        public int NameYearSelect { get => _nameYearSelect; set => Set(ref _nameYearSelect, value); }
+
+        private int _nameYearChoice;
+        public int NameYearChoice { get => _nameYearChoice; set => Set(ref _nameYearChoice, value); }
+
+        #endregion
+
+
 
         private bool _updateStatusUsers;
         public bool UpdateStatusUsers { get => _updateStatusUsers; set => Set(ref _updateStatusUsers, value); }
@@ -85,7 +110,7 @@ namespace EmployeeTimesheet.ViewModel
                         break;
                     default:
                         MessageBox.Show("Данные занесены в таблицу",
-                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                            "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
                         AddDataEmployeeTimesheet.Clear();
                         AddEployeeTimessheet();
                         break;
@@ -123,7 +148,7 @@ namespace EmployeeTimesheet.ViewModel
             {
                 StaticDataModel.NameKbFromMain = SelectedNameKbs;
             }
-            ReportOutputWindow reportOutput = new(AddDataEmployeeTimesheet);
+            ReportOutputWindow reportOutput = new(AddDataEmployeeTimesheet, NameMonthSelect, NameYearSelect);
             reportOutput.ShowDialog();
         }
 
@@ -137,10 +162,7 @@ namespace EmployeeTimesheet.ViewModel
         }
 
         public ICommand ShowEmployeeStatusCommand { get; }
-        private bool CanShowEmployeeStatusCommandExecute(object p)
-        {
-            return _selectedNameKb == "Главный констр";
-        }
+        private bool CanShowEmployeeStatusCommandExecute(object p) => true;
 
         private void OnShowEmployeeStatusCommandExecuted(object p)
         {
@@ -160,6 +182,10 @@ namespace EmployeeTimesheet.ViewModel
             GenerateReportCommand = new LambdaCommand(OnGenerateReportCommandExecuted, CanGenerateReportCommandExecute);
             AboutProgramCommand = new LambdaCommand(OnAboutProgramCommandExecuted, CanAboutProgramCommandExecute);
             ShowEmployeeStatusCommand = new LambdaCommand(OnShowEmployeeStatusCommandExecuted, CanShowEmployeeStatusCommandExecute);
+            NameMonthAdd = DateTimeFormatInfo.CurrentInfo.MonthNames;
+            NameYearAdd = new SelectedWorkModel(StaticDataModel.ApplicationContext).SelectedYearInBase();
+            NameMonthChoice = DateTime.Now.Month - 1;
+            NameYearChoice = NameYearAdd.Length - 1;
             AddEployeeTimessheet();
         }
 
@@ -171,6 +197,8 @@ namespace EmployeeTimesheet.ViewModel
                 StaticDataModel.NameKbFromMain = SelectedNameKbs;
             }
             SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
+            selectedWorkModel._monthChoices = NameMonthRetInt.NameMonth(NameMonthSelect);
+            selectedWorkModel._yearChoices = NameMonthRetInt.NameYear(NameYearSelect);
             if (StaticDataModel.NameKbFromMain != null)
             {
                 _selectedWorkEmployee = selectedWorkModel.SelectedEmployee(StaticDataModel.NameKbFromMain);

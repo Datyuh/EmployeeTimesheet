@@ -22,6 +22,13 @@ namespace EmployeeTimesheet.Model
                 "Декабрь" => 12,
                 _ => DateTime.Now.Month,
             };
-        }      
-    }
+        }
+
+        public static int NameYear(int dateYearName)
+        {
+            if (dateYearName == 0)
+                return DateTime.Now.Year;
+            return dateYearName;
+        }
+    }   
 }

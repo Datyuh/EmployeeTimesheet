@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using ApplicationContextData;
@@ -20,6 +21,11 @@ namespace EmployeeTimesheet.Model
 
         private bool SearchNullInGrid()
         {
+            var weekend = _addDataEmployeeTimesheet.Select(x => x.DateEnterInBases.DayOfWeek);
+            if (weekend.Contains(DayOfWeek.Saturday) is true || weekend.Contains(DayOfWeek.Sunday) is true)
+            {
+                return false;
+            }
             return _addDataEmployeeTimesheet.Select(x => x.ListReportCards).Contains(null);
         }
 
@@ -34,7 +40,7 @@ namespace EmployeeTimesheet.Model
                         .Contains(items.DateEnterInBases);
                 if (dateInBse is false)
                 {
-                    return AddDataInBase(); 
+                    return AddDataInBase();
                 }
             }
             return false;
@@ -44,14 +50,17 @@ namespace EmployeeTimesheet.Model
         {
             foreach (WorkWindowModel items in _addDataEmployeeTimesheet)
             {
-                ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
+                if (items.ListReportCards != null)
                 {
-                    Status = items.ListReportCards,
-                    DateTimeAddData = items.DateEnterInBases,
-                    Employees = items.Employees,
-                };
-                _dbContext.EmployeeTimesheets.Add(employeeTimesheet);
-                _dbContext.SaveChanges();
+                    ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
+                    {
+                        Status = items.ListReportCards,
+                        DateTimeAddData = items.DateEnterInBases,
+                        Employees = items.Employees,
+                    };
+                    _dbContext.EmployeeTimesheets.Add(employeeTimesheet);
+                    _dbContext.SaveChanges();
+                }
             }
             return true;
         }

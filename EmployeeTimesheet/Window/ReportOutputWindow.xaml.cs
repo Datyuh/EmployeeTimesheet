@@ -9,10 +9,10 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class ReportOutputWindow : System.Windows.Window
     {
-        public ReportOutputWindow(ObservableCollection<WorkWindowModel> addDataEmployeeTimesheet)
+        public ReportOutputWindow(ObservableCollection<WorkWindowModel> addDataEmployeeTimesheet, string nameMonthSelect, int nameYearSelect)
         {
             InitializeComponent();
-            ReportOutputViewModel reportOutputViewModel = new(addDataEmployeeTimesheet);
+            ReportOutputViewModel reportOutputViewModel = new(addDataEmployeeTimesheet, nameMonthSelect, nameYearSelect);
             DataContext = reportOutputViewModel;
             reportOutputViewModel.CloseAction = Close;
         }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using ApplicationContextData;
 using BaseModelModule.Commands;
@@ -38,8 +39,8 @@ namespace EmployeeTimesheet.ViewModel
         private int _nameMonthChoice;
         public int NameMonthChoice { get => _nameMonthChoice; set => Set(ref _nameMonthChoice, value); }
 
-        private int[] _nameYearAdd;
-        public int[] NameYearAdd { get => _nameYearAdd; set => Set(ref _nameYearAdd, value); }
+        private List<int> _nameYearAdd;
+        public List<int> NameYearAdd { get => _nameYearAdd; set => Set(ref _nameYearAdd, value); }
 
         private int _nameYearSelect;
         public int NameYearSelect { get => _nameYearSelect; set => Set(ref _nameYearSelect, value); }
@@ -111,8 +112,9 @@ namespace EmployeeTimesheet.ViewModel
                     default:
                         MessageBox.Show("Данные занесены в таблицу",
                             "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-                        AddDataEmployeeTimesheet.Clear();
-                        AddEployeeTimessheet();
+                        RemAddEployeeTimessheet();
+                        //AddDataEmployeeTimesheet.Clear();
+                        //AddEployeeTimessheet();
                         break;
                 }
             }
@@ -135,8 +137,9 @@ namespace EmployeeTimesheet.ViewModel
                     StaticDataModel.ApplicationContext.SaveChanges();
                 }
             }
-            AddDataEmployeeTimesheet.Clear();
-            AddEployeeTimessheet();
+            RemAddEployeeTimessheet();
+            //AddDataEmployeeTimesheet.Clear();
+            //AddEployeeTimessheet();
         }
 
         public ICommand GenerateReportCommand { get; }
@@ -185,7 +188,7 @@ namespace EmployeeTimesheet.ViewModel
             NameMonthAdd = DateTimeFormatInfo.CurrentInfo.MonthNames;
             NameYearAdd = new SelectedWorkModel(StaticDataModel.ApplicationContext).SelectedYearInBase();
             NameMonthChoice = DateTime.Now.Month - 1;
-            NameYearChoice = NameYearAdd.Length - 1;
+            NameYearChoice = NameYearAdd.Count - 1;
             AddEployeeTimessheet();
         }
 
@@ -237,6 +240,25 @@ namespace EmployeeTimesheet.ViewModel
                     AddDataEmployeeTimesheet.Add(workWindowModel);
                 }
             }
+        }
+
+        public void RemAddEployeeTimessheet()
+        {
+            SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
+            selectedWorkModel._monthChoices = NameMonthRetInt.NameMonth(NameMonthSelect);
+            selectedWorkModel._yearChoices = NameMonthRetInt.NameYear(NameYearSelect);
+            foreach(Employee workEmployee in _selectedWorkEmployee
+                    .Select(p => p).Where(p => p.StatusUsers.Contains("Работает")))
+            {            
+                var workWindowModelItem = AddDataEmployeeTimesheet.FirstOrDefault(p => p.Fio == workEmployee.Fio);
+                workWindowModelItem.SumDayWork = selectedWorkModel.SumDayWork(workEmployee) +
+                                         selectedWorkModel.SumHalfDayWork(workEmployee);
+                workWindowModelItem.SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee);
+                workWindowModelItem.SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee);
+                workWindowModelItem.SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee);
+                workWindowModelItem.SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee);                
+            }
+            CollectionViewSource.GetDefaultView(AddDataEmployeeTimesheet).Refresh();
         }
     }
 }

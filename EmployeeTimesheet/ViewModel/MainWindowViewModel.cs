@@ -50,8 +50,7 @@ namespace EmployeeTimesheet.ViewModel
 
         public MainWindowViewModel()
         {
-            //AddNameKb addStart = new();
-            //addStart.AddNameKbAndPass();
+            //new AddNameKb().AddNameKbAndPass();
             GetInWorkWindowCommand =
                 new LambdaCommand(OnGetInWorkWindowCommandExecuted, CanGetInWorkWindowCommandExecute);
             NameKbOgkSource = _selected.SelectedNameKbOgks;

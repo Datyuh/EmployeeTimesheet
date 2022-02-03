@@ -16,6 +16,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <DataGrid
+            x:Name="gridWork"
             Grid.Column="0"
             AutoGenerateColumns="False"
             CanUserAddRows="False"

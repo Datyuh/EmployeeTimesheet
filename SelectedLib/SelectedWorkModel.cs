@@ -58,19 +58,20 @@ namespace SelectedLib
             return new ObservableCollection<EmployeeTimesheet>(selectedEmployeeTimesheets);
         }
 
-        public int[] SelectedYearInBase()
+        public List<int> SelectedYearInBase()
         {
             var selectedYearInBase = _db.EmployeeTimesheets
                 .Select(p => p.DateTimeAddData.Year)
                 .Where(p => p > DateTime.Now.Year - 2)
                 .Distinct();
 
+            List<int> selectedYear = new ();
+
             foreach (var item in selectedYearInBase)
             {
-                int[] selectedYear = new int[] { item };
-                return selectedYear;
+                selectedYear.Add(item);
             }
-            return new int[] { };
+            return selectedYear;            
         }
 
         public double SumDayWork(Employee workEmployee)

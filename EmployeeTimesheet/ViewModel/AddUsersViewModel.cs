@@ -13,7 +13,7 @@ namespace EmployeeTimesheet.ViewModel
 {
     class AddUsersViewModel : BaseViewModel
     {
-        private bool _nullRowGrid;
+        private bool _nullRowGrid;        
         private readonly WorkWindowViewModel _workWindow;
         private ObservableCollection<AddUserModel> _addUsersInGrid = new();
         public ObservableCollection<AddUserModel> AddUsersInGrid { get => _addUsersInGrid; set => Set(ref _addUsersInGrid, value); }
@@ -73,7 +73,7 @@ namespace EmployeeTimesheet.ViewModel
                         MessageBox.Show("Не все поля заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
                         break;
                     default:
-                        MessageBox.Show("Данные добавлены в базу", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Данные сохранены", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
                         break;
                 }
             }
@@ -89,11 +89,11 @@ namespace EmployeeTimesheet.ViewModel
             AddUsersInGrid = new ObservableCollection<AddUserModel> { new(null, null, null, null) };
             AddUsersNewRowCommand = new LambdaCommand(OnAddUsersNewRowCommandExecuted, CanAddUsersNewRowCommandExecute);
             AddUsersInBaseCommand = new LambdaCommand(OnAddUsersInBaseCommandExecuted, CanAddUsersInBaseCommandExecute);
-        }
+        }       
 
         private void AddNullRow()
         {
-            for (int i = 0; i < AddUsersInGrid.Count;)
+            for (int i = 0; i <= AddUsersInGrid.Count;)
             {
                 AddUsersInGrid.Add(new AddUserModel(null, null, null, null));
                 break;

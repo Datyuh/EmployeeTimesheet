@@ -25,7 +25,7 @@
             FontFamily="Calibri"
             FontSize="14"
             HorizontalScrollBarVisibility="Auto"
-            ItemsSource="{Binding AddDataEmployeeTimesheet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding AddDataEmployeeTimesheet, Mode=TwoWay}"
             VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <!--<DataGridCheckBoxColumn Binding="{Binding UpdateUserStatusCheckBox}" />-->
@@ -36,7 +36,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 d:DataContext="{d:DesignData}"
-                                IsChecked="{Binding UpdateUserStatusCheckBox, UpdateSourceTrigger=PropertyChanged}" />
+                                IsChecked="{Binding UpdateUserStatusCheckBox}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -67,7 +67,7 @@
                         <DataTemplate>
                             <DatePicker
                                 d:DataContext="{d:DesignData}"
-                                DisplayDate="{Binding DateEnterInBase, UpdateSourceTrigger=PropertyChanged}"
+                                DisplayDate="{Binding DateEnterInBase}"
                                 FontSize="14"
                                 SelectedDate="{Binding DateEnterInBases, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedDateFormat="Short" />
@@ -77,22 +77,27 @@
                 <DataGridTextColumn
                     Binding="{Binding SumDayWork}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во отраб. дней"
+                    Header="Отраб. дней"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding SumDayOwnExpense}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во ОБС дней"
+                    Header="ОБС дней"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding SumDayMedical}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во больничных дней"
+                    Header="Больничных дней"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding SumDayVacation}"
                     ClipboardContentBinding="{x:Null}"
-                    Header="Кол-во отпускых дней"
+                    Header="Отпускых дней"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding SumDayRemoteWork}"
+                    ClipboardContentBinding="{x:Null}"
+                    Header="Удаленка дней"
                     IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
@@ -177,7 +182,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding ShowEmployeeStatusCommand}"
-                        Content="Показать" />
+                        Content="Обновить" />
                 </StackPanel>
             </StackPanel>
 
@@ -226,7 +231,7 @@
                     Margin="10,0,10,10"
                     VerticalAlignment="Bottom"
                     Command="{Binding AddDataInBaseCommand}"
-                    Content="Внести изменения">
+                    Content="Сохранить">
                     <Button.Background>
                         <LinearGradientBrush>
                             <GradientStop Offset="1" Color="#FFF3F3F3" />

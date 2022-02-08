@@ -140,5 +140,15 @@ namespace SelectedLib
                 .Count();
             return sumDayWorkWeekends;
         }
+        public int SumDayRemoteWork(Employee workEmployee)
+        {
+            var sumDayRemoteWork = SelectedEmployeeTimesheet
+                .Where(e => e.Status == "Удаленная работа"
+                            && e.Employees == workEmployee
+                            && e.DateTimeAddData.Month == _monthChoices)
+                .Select(p => p.DateTimeAddData)
+                .Count();
+            return sumDayRemoteWork;
+        }
     }
 }

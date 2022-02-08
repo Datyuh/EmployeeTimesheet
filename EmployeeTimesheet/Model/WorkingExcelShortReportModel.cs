@@ -37,7 +37,9 @@ namespace EmployeeTimesheet.Model
             excelColumnServNumbrs.Value2 = "Таб. №";
             var excelTotal = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 4];
             excelTotal.Value2 = "Итого отраб. дней";
-            var excelTotalWeekends = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 5];
+            var excelTotalRemote = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 5];
+            excelTotalRemote.Value2 = "Итого удал. раб.";
+            var excelTotalWeekends = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[2, 6];
             excelTotalWeekends.Value2 = "Итого раб. в вых. дни";
         }
 
@@ -55,7 +57,10 @@ namespace EmployeeTimesheet.Model
                 var excelTotalStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 4];
                 excelTotalStatus.Value2 = windowModel.SumDayWork;
 
-                var excelTotalWeekendsStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 5];
+                var excelTotalRemoteStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 5];
+                excelTotalRemoteStatus.Value2 = windowModel.SumDayRemoteWork;
+
+                var excelTotalWeekendsStatus = (Microsoft.Office.Interop.Excel.Range)_objWorkSheet.Cells[_columsExcel, 6];
                 excelTotalWeekendsStatus.Value2 = windowModel.SumDayWorkWeekends;
 
                 _columsExcel++;

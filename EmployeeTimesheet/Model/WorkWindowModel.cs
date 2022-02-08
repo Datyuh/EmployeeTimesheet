@@ -10,10 +10,11 @@ namespace EmployeeTimesheet.Model
         public string Fio { get; set; }
         public int ServiceNumbers { get; set; }
         public double SumDayWork { get; set; }
-        public int SumDayOwnExpense { get; set; }
+        public double SumDayOwnExpense { get; set; }
         public int SumDayMedical { get; set; }
         public int SumDayVacation { get; set; }
         public int SumDayWorkWeekends { get; set; }
+        public int SumDayRemoteWork { get; set; }
         public List<string> ListReportCard { get; set; }
         public DateTime DateEnterInBase { get; set; }
         public string ListReportCards { get; set; }

@@ -112,7 +112,7 @@ namespace EmployeeTimesheet.ViewModel
                     default:
                         MessageBox.Show("Данные занесены в таблицу",
                             "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-                        RemAddEployeeTimessheet();
+                        RefreshEployeeTimessheet();
                         //AddDataEmployeeTimesheet.Clear();
                         //AddEployeeTimessheet();
                         break;
@@ -137,9 +137,8 @@ namespace EmployeeTimesheet.ViewModel
                     StaticDataModel.ApplicationContext.SaveChanges();
                 }
             }
-            RemAddEployeeTimessheet();
-            //AddDataEmployeeTimesheet.Clear();
-            //AddEployeeTimessheet();
+            AddDataEmployeeTimesheet.Clear();
+            AddEployeeTimessheet();
         }
 
         public ICommand GenerateReportCommand { get; }
@@ -169,7 +168,8 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnShowEmployeeStatusCommandExecuted(object p)
         {
-            AddEployeeTimessheet();
+            RefreshEployeeTimessheet();
+            //AddEployeeTimessheet();
         }
 
 
@@ -212,7 +212,7 @@ namespace EmployeeTimesheet.ViewModel
                         в классе WorkingWithExcelModel 
                         в методе AddRowDate
                      */
-                    "Явка", "ОБС", "Пол. дня ОБС", "Больничный",
+                    "Явка", "Удаленная работа", "ОБС", "Пол. дня ОБС", "Больничный",
                     "Отпуск осн.", "Командировка",
                     "Работа в праз. и вых.", "Праздн. и вых. дни"
                 };
@@ -232,7 +232,9 @@ namespace EmployeeTimesheet.ViewModel
                                      selectedWorkModel.SumHalfDayWork(workEmployee),
                         SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee),
                         SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
-                        SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee),
+                        SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) + 
+                                     selectedWorkModel.SumHalfDayWork(workEmployee),
+                        SumDayRemoteWork = selectedWorkModel.SumDayRemoteWork(workEmployee),
                         SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),
                         ListReportCard = listReportCard,
                         DateEnterInBases = dateEnterInBase
@@ -242,20 +244,22 @@ namespace EmployeeTimesheet.ViewModel
             }
         }
 
-        public void RemAddEployeeTimessheet()
+        public void RefreshEployeeTimessheet()
         {
             SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             selectedWorkModel._monthChoices = NameMonthRetInt.NameMonth(NameMonthSelect);
             selectedWorkModel._yearChoices = NameMonthRetInt.NameYear(NameYearSelect);
             foreach(Employee workEmployee in _selectedWorkEmployee
                     .Select(p => p).Where(p => p.StatusUsers.Contains("Работает")))
-            {            
-                var workWindowModelItem = AddDataEmployeeTimesheet.FirstOrDefault(p => p.Fio == workEmployee.Fio);
+            {
+                WorkWindowModel workWindowModelItem = AddDataEmployeeTimesheet.FirstOrDefault(p => p.Fio == workEmployee.Fio);
                 workWindowModelItem.SumDayWork = selectedWorkModel.SumDayWork(workEmployee) +
                                          selectedWorkModel.SumHalfDayWork(workEmployee);
                 workWindowModelItem.SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee);
                 workWindowModelItem.SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee);
-                workWindowModelItem.SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee);
+                workWindowModelItem.SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) +
+                                     selectedWorkModel.SumHalfDayWork(workEmployee);
+                workWindowModelItem.SumDayRemoteWork = selectedWorkModel.SumDayRemoteWork(workEmployee);
                 workWindowModelItem.SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee);                
             }
             CollectionViewSource.GetDefaultView(AddDataEmployeeTimesheet).Refresh();

@@ -1,4 +1,5 @@
 ﻿using EmployeeTimesheet.ViewModel;
+using System.Windows.Input;
 
 namespace EmployeeTimesheet.Window
 {
@@ -7,10 +8,12 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class AddUsers
     {
+        private AddUsersViewModel _addUsersViewModel;
         public AddUsers(WorkWindowViewModel owner)
         {
+            _addUsersViewModel = new AddUsersViewModel(owner);
             InitializeComponent();
-            DataContext = new AddUsersViewModel(owner);
+            DataContext = _addUsersViewModel;
         }
     }
 }

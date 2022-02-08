@@ -67,7 +67,9 @@ namespace EmployeeTimesheet.Model
             excelColumnServNumbrs.Value2 = "Таб. №";
             var excelTotal = (Excel.Range)_objWorkSheet.Cells[2, _total];
             excelTotal.Value2 = "Итого отраб. дней";
-            var excelTotalWeekends = (Excel.Range) _objWorkSheet.Cells[2, _total + 1];
+            var excelTotalRemote = (Excel.Range)_objWorkSheet.Cells[2, _total + 1];
+            excelTotalRemote.Value2 = "Итого удал. раб.";
+            var excelTotalWeekends = (Excel.Range) _objWorkSheet.Cells[2, _total + 2];
             excelTotalWeekends.Value2 = "Итого раб. в вых. дни";
         }
 
@@ -89,7 +91,11 @@ namespace EmployeeTimesheet.Model
                     var sumHalfDayWork = _allEmployeeTimesheets
                         .Count(g => g.Status == "Пол. дня ОБС" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
                         && g.DateTimeAddData.Month == _nameMonthChoice) * 0.5;
-                    var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
+                    var excelTotalRemoteStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
+                    excelTotalRemoteStatus.Value2 = _allEmployeeTimesheets
+                        .Count(e => e.Status == "Удаленная работа" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio
+                                                                   && e.Status != null && e.DateTimeAddData.Month == _nameMonthChoice);
+                    var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 2];
                     excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
                         .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio
                                                                         && e.Status != null && e.DateTimeAddData.Month == _nameMonthChoice);
@@ -137,6 +143,7 @@ namespace EmployeeTimesheet.Model
                         excelStatusEmpl.Value2 = allEmployeeTimesheet.Status switch
                         {
                             "Явка" => "Я",
+                            "Удаленная работа" => "Я",
                             "ОБС" => "ДО",
                             "Больничный" => "Б",
                             "Отпуск осн." => "ОТ",
@@ -156,7 +163,7 @@ namespace EmployeeTimesheet.Model
             excelCells1.Merge(Type.Missing);
             excelCells1.Interior.Color = Excel.XlRgbColor.rgbPaleVioletRed;
             excelCells1.Value2 =
-                "Я => Явка,   ДО => ОБС,  Б =>   Больничный,  ОТ => Отпуск осн.,    К => Командировка\r\n" +
+                "Я => Явка, Удаленная работа => Я, ДО => ОБС,  Б =>   Больничный,  ОТ => Отпуск осн.,    К => Командировка\r\n" +
                 "   РВ => Работа в праз. и вых.,    В => Праздн. и вых. дни,    Пол. ДО => Пол. дня ОБС";
 
         }

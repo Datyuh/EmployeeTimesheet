@@ -236,6 +236,7 @@ namespace EmployeeTimesheet.ViewModel
                                      selectedWorkModel.SumHalfDayWork(workEmployee),
                         SumDayRemoteWork = selectedWorkModel.SumDayRemoteWork(workEmployee),
                         SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),
+                        SumDayWeekendWork = selectedWorkModel.SumWeekendWork(workEmployee),
                         ListReportCard = listReportCard,
                         DateEnterInBases = dateEnterInBase
                     };
@@ -260,7 +261,8 @@ namespace EmployeeTimesheet.ViewModel
                 workWindowModelItem.SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) +
                                      selectedWorkModel.SumHalfDayWork(workEmployee);
                 workWindowModelItem.SumDayRemoteWork = selectedWorkModel.SumDayRemoteWork(workEmployee);
-                workWindowModelItem.SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee);                
+                workWindowModelItem.SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee);
+                workWindowModelItem.SumDayWeekendWork = selectedWorkModel.SumWeekendWork(workEmployee);
             }
             CollectionViewSource.GetDefaultView(AddDataEmployeeTimesheet).Refresh();
         }

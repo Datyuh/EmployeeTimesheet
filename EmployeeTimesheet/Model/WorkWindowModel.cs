@@ -15,6 +15,7 @@ namespace EmployeeTimesheet.Model
         public int SumDayVacation { get; set; }
         public int SumDayWorkWeekends { get; set; }
         public int SumDayRemoteWork { get; set; }
+        public int SumDayWeekendWork { get; set; }
         public List<string> ListReportCard { get; set; }
         public DateTime DateEnterInBase { get; set; }
         public string ListReportCards { get; set; }

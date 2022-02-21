@@ -50,10 +50,20 @@ namespace EmployeeTimesheet.ViewModel
 
         #endregion
 
-
+        private int _excelExecution;
+        public int ExcelExecution { get => _excelExecution; set => Set(ref _excelExecution, value); }
 
         private bool _updateStatusUsers;
         public bool UpdateStatusUsers { get => _updateStatusUsers; set => Set(ref _updateStatusUsers, value); }
+
+        private bool _UpdateStatusUsersEnabled = true;
+        public bool UpdateStatusUsersEnabled { get => _UpdateStatusUsersEnabled; set => Set(ref _UpdateStatusUsersEnabled, value); }
+
+        private bool _updateKbUsers;
+        public bool UpdateKbUsers { get => _updateKbUsers; set => Set(ref _updateKbUsers, value); }
+
+        private bool _updateKbUsersEnabled = true;
+        public bool UpdateKbUsersEnabled { get => _updateKbUsersEnabled; set => Set(ref _updateKbUsersEnabled, value); }
 
         private bool _forChiefDesignerEnabled = false;
         public bool ForChiefDesignerEnabled { get => _forChiefDesignerEnabled; set => Set(ref _forChiefDesignerEnabled, value); }
@@ -123,23 +133,69 @@ namespace EmployeeTimesheet.ViewModel
         public ICommand UpdateUserStatusCommand { get; }
         private bool CanUpdateUserStatusCommandExecute(object p)
         {
-            return UpdateStatusUsers is true && _selectedNameKb != "Главный констр";
+            return UpdateStatusUsers is true || UpdateKbUsers is true && _selectedNameKb != "Главный констр";
         }
 
         private void OnUpdateUserStatusCommandExecuted(object p)
-        {
+        {            
             foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
             {
                 if (items.UpdateUserStatusCheckBox is true)
                 {
-                    Employee employee = StaticDataModel.ApplicationContext.Employees.Find(items.Employees.Id);
-                    if (employee != null) employee.StatusUsers = "Уволен";
+                    if (UpdateStatusUsers is true)
+                    {                       
+                        Employee employee = StaticDataModel.ApplicationContext.Employees.Find(items.Employees.Id);
+                        if (employee != null) employee.StatusUsers = "Уволен";
+                    }
+
+                    else if (UpdateKbUsers is true)
+                    {
+                        Employee employee = StaticDataModel.ApplicationContext.Employees.Find(items.Employees.Id);
+                        if (employee != null) employee.NameKbId = SelectedNameKbs.Id;
+                    }
+
                     StaticDataModel.ApplicationContext.SaveChanges();
                 }
             }
             AddDataEmployeeTimesheet.Clear();
             AddEployeeTimessheet();
         }
+
+        #region CheckBoxCommand
+
+        public ICommand UpdateStatusUsersCommand { get; }
+        private bool CanUpdateStatusUsersCommandExecute(object p)
+        {
+            return UpdateKbUsers is false && _selectedNameKb != "Главный констр";
+        }
+
+        private void OnUpdateStatusUsersCommandExecuted(object p)
+        {
+            
+        }
+
+        public ICommand UpdateKbUsersCommand { get; }
+        private bool CanUpdateKbUsersCommandExecute(object p)
+        {
+            return UpdateStatusUsers is false && _selectedNameKb != "Главный констр";
+        }
+
+        private void OnUpdateKbUsersCommandExecuted(object p)
+        {
+            if (UpdateKbUsers is true)
+            {
+                ForChiefDesignerEnabled = true;
+            }
+            else
+            {
+                //ListNameKb.Clear();
+                ForChiefDesignerEnabled = false;
+            }
+            
+        }
+
+        #endregion
+
 
         public ICommand GenerateReportCommand { get; }
         private bool CanGenerateReportCommandExecute(object p) => true;
@@ -151,7 +207,7 @@ namespace EmployeeTimesheet.ViewModel
                 StaticDataModel.NameKbFromMain = SelectedNameKbs;
             }
             ReportOutputWindow reportOutput = new(AddDataEmployeeTimesheet, NameMonthSelect, NameYearSelect);
-            reportOutput.ShowDialog();
+            reportOutput.ShowDialog();           
         }
 
         public ICommand AboutProgramCommand { get; }
@@ -185,8 +241,10 @@ namespace EmployeeTimesheet.ViewModel
             GenerateReportCommand = new LambdaCommand(OnGenerateReportCommandExecuted, CanGenerateReportCommandExecute);
             AboutProgramCommand = new LambdaCommand(OnAboutProgramCommandExecuted, CanAboutProgramCommandExecute);
             ShowEmployeeStatusCommand = new LambdaCommand(OnShowEmployeeStatusCommandExecuted, CanShowEmployeeStatusCommandExecute);
-            NameMonthAdd = DateTimeFormatInfo.CurrentInfo.MonthNames;
             NameYearAdd = new SelectedWorkModel(StaticDataModel.ApplicationContext).SelectedYearInBase();
+            NameMonthAdd = DateTimeFormatInfo.CurrentInfo.MonthNames;
+            UpdateStatusUsersCommand = new LambdaCommand(OnUpdateStatusUsersCommandExecuted, CanUpdateStatusUsersCommandExecute);
+            UpdateKbUsersCommand = new LambdaCommand(OnUpdateKbUsersCommandExecuted, CanUpdateKbUsersCommandExecute);
             NameMonthChoice = DateTime.Now.Month - 1;
             NameYearChoice = NameYearAdd.Count - 1;
             AddEployeeTimessheet();
@@ -214,7 +272,7 @@ namespace EmployeeTimesheet.ViewModel
                      */
                     "Явка", "Удаленная работа", "ОБС", "Пол. дня ОБС", "Больничный",
                     "Отпуск осн.", "Командировка",
-                    "Работа в праз. и вых.", "Праздн. и вых. дни"
+                    "Работа в праз. и вых.", "Праздн. и вых. дни", "",
                 };
 
                 var dateEnterInBase = DateTime.Now.Date;

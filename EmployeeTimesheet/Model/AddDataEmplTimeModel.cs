@@ -48,19 +48,17 @@ namespace EmployeeTimesheet.Model
 
         private bool AddDataInBase()
         {
-            foreach (WorkWindowModel items in _addDataEmployeeTimesheet)
-            {
-                if (items.ListReportCards != null)
+            foreach (WorkWindowModel items in _addDataEmployeeTimesheet.Select(p => p).Where(p => p.ListReportCards != null && p.ListReportCards != ""))
+            {               
+                ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
                 {
-                    ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
-                    {
-                        Status = items.ListReportCards,
-                        DateTimeAddData = items.DateEnterInBases,
-                        Employees = items.Employees,
-                    };
-                    _dbContext.EmployeeTimesheets.Add(employeeTimesheet);
-                    _dbContext.SaveChanges();
-                }
+                    Status = items.ListReportCards,
+                    DateTimeAddData = items.DateEnterInBases,
+                    Employees = items.Employees,
+                };
+                _dbContext.EmployeeTimesheets.Add(employeeTimesheet);
+                _dbContext.SaveChanges();
+                
             }
             return true;
         }
@@ -72,21 +70,18 @@ namespace EmployeeTimesheet.Model
 
         private bool RedirectDataInBase()
         {
-            foreach (WorkWindowModel items in _addDataEmployeeTimesheet)
-            {
-                if (items.ListReportCards != null)
+            foreach (WorkWindowModel items in _addDataEmployeeTimesheet.Select(p => p).Where(p => p.ListReportCards != null && p.ListReportCards != ""))
+            {                
+                var employee = _dbContext.EmployeeTimesheets
+                    .Select(x => x)
+                    .Where(x => x.EmployeesId == items.Employees.Id
+                                && x.DateTimeAddData == items.DateEnterInBases);
+                foreach (var status in employee)
                 {
-                    var employee = _dbContext.EmployeeTimesheets
-                        .Select(x => x)
-                        .Where(x => x.EmployeesId == items.Employees.Id
-                                    && x.DateTimeAddData == items.DateEnterInBases);
-                    foreach (var status in employee)
-                    {
-                        status.Status = items.ListReportCards;
-                    }
-
-                    _dbContext.SaveChanges();
+                    status.Status = items.ListReportCards;
                 }
+
+                _dbContext.SaveChanges();               
             }
             return true;
         }

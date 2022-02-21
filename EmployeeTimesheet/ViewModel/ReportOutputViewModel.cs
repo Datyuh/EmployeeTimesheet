@@ -14,10 +14,9 @@ namespace EmployeeTimesheet.ViewModel
         public Action CloseAction { get; set; }
 
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
-
         private int _nameYearSelect;
-        private string _nameMonthSelect;
-     
+        private string _nameMonthSelect;      
+
         public ICommand OutputFullReportCommand { get; }
         private bool CanOutputFullReportCommandExecute(object p) => true;
 
@@ -26,7 +25,7 @@ namespace EmployeeTimesheet.ViewModel
             CloseAction();
             var nameMonthChoice = NameMonthRetInt.NameMonth(_nameMonthSelect);
             var selectedEmployee = new SelectedForExcel(StaticDataModel.ApplicationContext);
-            _ = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime(StaticDataModel.NameKbFromMain), nameMonthChoice, _nameYearSelect);
+            var excelExecution = new WorkingWithExcelModel(selectedEmployee.SelectedDateEmplTime(StaticDataModel.NameKbFromMain), nameMonthChoice, _nameYearSelect);            
         }
 
         public ICommand OutputShortReportCommand { get; }
@@ -40,7 +39,7 @@ namespace EmployeeTimesheet.ViewModel
         }
 
         public ReportOutputViewModel(ObservableCollection<WorkWindowModel> addDataEmployeeTimesheet, string nameMonthSelect, int nameYearSelect)
-        {
+        {            
             _nameMonthSelect = nameMonthSelect;
             _nameYearSelect = nameYearSelect;
             _addDataEmployeeTimesheet = addDataEmployeeTimesheet;

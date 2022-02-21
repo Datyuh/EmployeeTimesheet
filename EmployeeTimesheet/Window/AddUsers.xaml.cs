@@ -1,5 +1,4 @@
 ﻿using EmployeeTimesheet.ViewModel;
-using System.Windows.Input;
 
 namespace EmployeeTimesheet.Window
 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmployeeTimesheet.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace EmployeeTimesheet.Model
 
             //Книга
             _objWorkBook = _objExcel.Workbooks.Add(System.Reflection.Missing.Value);
-            _objExcel.Visible = true;
+            _objExcel.Visible = false;
             //Таблица.
             _objWorkSheet = (Excel.Worksheet)_objWorkBook.Sheets[1];
 
@@ -61,15 +62,15 @@ namespace EmployeeTimesheet.Model
 
         private void AddColumnName()
         {
-            var excelColumnFios = (Excel.Range)_objWorkSheet.Cells[2, 2];
+            var excelColumnFios = _objWorkSheet.Cells[2, 2] as Excel.Range;
             excelColumnFios.Value2 = "Ф. И. О.";
-            var excelColumnServNumbrs = (Excel.Range)_objWorkSheet.Cells[2, 3];
+            var excelColumnServNumbrs = _objWorkSheet.Cells[2, 3] as Excel.Range;
             excelColumnServNumbrs.Value2 = "Таб. №";
-            var excelTotal = (Excel.Range)_objWorkSheet.Cells[2, _total];
+            var excelTotal = _objWorkSheet.Cells[2, _total] as Excel.Range;
             excelTotal.Value2 = "Итого отраб. дней";
-            var excelTotalRemote = (Excel.Range)_objWorkSheet.Cells[2, _total + 1];
+            var excelTotalRemote = _objWorkSheet.Cells[2, _total + 1] as Excel.Range;
             excelTotalRemote.Value2 = "Итого удал. раб.";
-            var excelTotalWeekends = (Excel.Range) _objWorkSheet.Cells[2, _total + 2];
+            var excelTotalWeekends = _objWorkSheet.Cells[2, _total + 2] as Excel.Range;
             excelTotalWeekends.Value2 = "Итого раб. в вых. дни";
         }
 
@@ -91,24 +92,24 @@ namespace EmployeeTimesheet.Model
                     var sumHalfDayWork = _allEmployeeTimesheets
                         .Count(g => g.Status == "Пол. дня ОБС" && g.Employees.Fio == allEmployeeTimesheet.Employees.Fio 
                         && g.DateTimeAddData.Month == _nameMonthChoice) * 0.5;
-                    var excelTotalRemoteStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 1];
+                    var excelTotalRemoteStatus = _objWorkSheet.Cells[_columnExcelServNum, _total + 1] as Excel.Range;
                     excelTotalRemoteStatus.Value2 = _allEmployeeTimesheets
                         .Count(e => e.Status == "Удаленная работа" && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio
                                                                    && e.Status != null && e.DateTimeAddData.Month == _nameMonthChoice);
-                    var excelTotalWeekendsStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total + 2];
+                    var excelTotalWeekendsStatus =  _objWorkSheet.Cells[_columnExcelServNum, _total + 2] as Excel.Range;
                     excelTotalWeekendsStatus.Value2 = _allEmployeeTimesheets
                         .Count(e => e.Status == "Работа в праз. и вых." && e.Employees.Fio == allEmployeeTimesheet.Employees.Fio
                                                                         && e.Status != null && e.DateTimeAddData.Month == _nameMonthChoice);
 
                     var sumDayWorks = sumDayWork + sumHalfDayWork;
 
-                    var excelColumnFio = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, 2];
+                    var excelColumnFio =  _objWorkSheet.Cells[_columnExcelServNum, 2] as Excel.Range;
                     excelColumnFio.Value2 = allEmployeeTimesheet.Employees.Fio;
 
-                    var excelServNomb = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, 3];
+                    var excelServNomb =  _objWorkSheet.Cells[_columnExcelServNum, 3] as Excel.Range;
                     excelServNomb.Value2 = allEmployeeTimesheet.Employees.ServiceNumbers;
 
-                    var excelTotalStatus = (Excel.Range)_objWorkSheet.Cells[_columnExcelServNum, _total];
+                    var excelTotalStatus =  _objWorkSheet.Cells[_columnExcelServNum, _total] as Excel.Range;
                     excelTotalStatus.Value2 = sumDayWorks;
 
                     _columnExcelServNum++;
@@ -119,12 +120,12 @@ namespace EmployeeTimesheet.Model
                 {
                     if (x != allEmployeeTimesheet.Employees.Fio)
                     {
-                        var excelDate = (Excel.Range)_objWorkSheet.Cells[2, _rowExcel];
+                        var excelDate = _objWorkSheet.Cells[2, _rowExcel] as Excel.Range;
                         excelDate.NumberFormatLocal = "ДД.ММ.ГГГГ";
                         excelDate.Value2 = dateOfMonth.Date;
                         if (dateOfMonth.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
                         {
-                            var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
+                            var excelStatusEmpl =  _objWorkSheet.Cells[_columsExcel, _rowExcel] as Excel.Range;
                             excelStatusEmpl.Value2 = "В";
                         }
                     }
@@ -139,7 +140,7 @@ namespace EmployeeTimesheet.Model
                     */
                     if (dateOfMonth.Date == allEmployeeTimesheet.DateTimeAddData)
                     {
-                        var excelStatusEmpl = (Excel.Range)_objWorkSheet.Cells[_columsExcel, _rowExcel];
+                        var excelStatusEmpl =  _objWorkSheet.Cells[_columsExcel, _rowExcel] as Excel.Range;
                         excelStatusEmpl.Value2 = allEmployeeTimesheet.Status switch
                         {
                             "Явка" => "Я",
@@ -163,9 +164,10 @@ namespace EmployeeTimesheet.Model
             excelCells1.Merge(Type.Missing);
             excelCells1.Interior.Color = Excel.XlRgbColor.rgbPaleVioletRed;
             excelCells1.Value2 =
-                "Я => Явка, Удаленная работа => Я, ДО => ОБС,  Б =>   Больничный,  ОТ => Отпуск осн.,    К => Командировка\r\n" +
-                "   РВ => Работа в праз. и вых.,    В => Праздн. и вых. дни,    Пол. ДО => Пол. дня ОБС";
-
+                "Я => Явка, Удаленная работа; ДО => ОБС;  Б =>   Больничный;  ОТ => Отпуск осн.;    К => Командировка\r\n" +
+                "   РВ => Работа в праз. и вых.;    В => Праздн. и вых. дни;    Пол. ДО => Пол. дня ОБС";
+            _objExcel.Visible = true;           
         }
+        
     }
 }

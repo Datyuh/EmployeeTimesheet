@@ -47,23 +47,31 @@
                     Header="Таб. номер" />
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel
-            Grid.Column="1"
-            VerticalAlignment="Bottom"
-            Orientation="Vertical">
-            <Button
-                Height="30"
-                Margin="5"
+        <Grid Grid.Column="1">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0.8,0" EndPoint="0.4,1">
+                    <GradientStop Offset="0" Color="#FF006DFF" />
+                    <GradientStop Offset="1" Color="#FF74FFA9" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <StackPanel
+                Grid.Column="1"
                 VerticalAlignment="Bottom"
-                Command="{Binding AddUsersNewRowCommand}"
-                Content="Добавить поле" />
+                Orientation="Vertical">
+                <Button
+                    Height="30"
+                    Margin="5"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding AddUsersNewRowCommand}"
+                    Content="Добавить поле" />
 
-            <Button
-                Height="30"
-                Margin="5"
-                VerticalAlignment="Bottom"
-                Command="{Binding AddUsersInBaseCommand}"
-                Content="Сохранить" />
-        </StackPanel>
+                <Button
+                    Height="30"
+                    Margin="5"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding AddUsersInBaseCommand}"
+                    Content="Сохранить" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

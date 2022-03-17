@@ -14,6 +14,12 @@
     WindowStyle="ToolWindow"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.4,1" StartPoint="0.8,0">
+                <GradientStop Color="#FF006DFF" Offset="0"/>
+                <GradientStop Color="#FF74FFA9" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid>
             <TextBlock
                 Width="264"
@@ -22,7 +28,7 @@
                 Padding="3"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="White"
+                Background="Transparent"
                 FontFamily="Calibri"
                 Foreground="Black"
                 TextWrapping="Wrap"><Run Text="Название: Табель учета рабочего времени" /><LineBreak /><Run Text="Версия v1.0.0" /><LineBreak /><LineBreak /><Span><Run Text="Автор:" /></Span><LineBreak /><Span><Run Text="     Учаев Алексей Владимирович" /></Span><LineBreak /><LineBreak /><Span><Run Text="Телефон: " /></Span><LineBreak /><Run Text="      73-19 " /></TextBlock>

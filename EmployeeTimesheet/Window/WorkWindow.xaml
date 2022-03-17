@@ -184,6 +184,12 @@
         </DataGrid>
 
         <Grid Grid.Column="1">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.4,1" StartPoint="0.8,0">
+                    <GradientStop Color="#FF006DFF" Offset="0"/>
+                    <GradientStop Color="#FF74FFA9" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.2*" />

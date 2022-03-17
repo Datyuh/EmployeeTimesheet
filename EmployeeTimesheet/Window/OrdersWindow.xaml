@@ -90,99 +90,98 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel
-            Grid.Column="1"
-            Margin="0,0,0,25"
-            VerticalAlignment="Bottom"
-            Orientation="Vertical">
+        <Grid Grid.Column="1">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0.8,0" EndPoint="0.4,1">
+                    <GradientStop Offset="0" Color="#FF006DFF" />
+                    <GradientStop Offset="1" Color="#FF74FFA9" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <StackPanel
+                Margin="0,0,0,25"
+                VerticalAlignment="Bottom"
+                Orientation="Vertical">
 
-            <Grid Margin="2.5,0,5,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="5,20,5,5"
-                    HorizontalAlignment="Center"
-                    FontSize="14"
-                    Text="Выберите Ф.И.О. сотрудника"
-                    TextWrapping="Wrap" />
-                <TextBlock
-                    Grid.Column="1"
-                    Margin="5,20,5,5"
-                    HorizontalAlignment="Center"
-                    FontSize="14"
-                    Text="Выберите год"
-                    TextWrapping="Wrap" />
-            </Grid>
+                <Grid Margin="2.5,0,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="5,20,5,5"
+                        HorizontalAlignment="Center"
+                        FontSize="14"
+                        Text="Выберите Ф.И.О. сотрудника"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="5,20,5,5"
+                        HorizontalAlignment="Center"
+                        FontSize="14"
+                        Text="Выберите год"
+                        TextWrapping="Wrap" />
+                </Grid>
 
-            <Grid Margin="2.5,0,5,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <ComboBox
-                    Grid.Column="0"
-                    Height="25"
-                    Margin="2.5,0,2.5,0"
-                    DisplayMemberPath="Fio"
-                    DropDownClosed="ComboBox_DropDownClosed"
-                    FontSize="14"
-                    ItemsSource="{Binding ListNameEmployees, Mode=OneWay}"
-                    SelectedIndex="{Binding ListNameEmployeesChoice, Mode=TwoWay}"
-                    SelectedItem="{Binding ListNameEmployee, Mode=OneWayToSource}" />
-                <ComboBox
-                    Grid.Column="1"
-                    Height="25"
-                    Margin="2.5,0,0,0"
-                    DropDownClosed="ComboBox_DropDownClosed"
-                    FontSize="14"
-                    ItemsSource="{Binding YearOrdersAdd, Mode=OneWay}"
-                    SelectedIndex="{Binding YearOrdersChoice, Mode=TwoWay}"
-                    SelectedItem="{Binding SelectYearOrders, Mode=OneWayToSource}" />
-            </Grid>
+                <Grid Margin="2.5,0,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        Grid.Column="0"
+                        Height="25"
+                        Margin="2.5,0,2.5,0"
+                        DisplayMemberPath="Fio"
+                        DropDownClosed="ComboBox_DropDownClosed"
+                        FontSize="14"
+                        ItemsSource="{Binding ListNameEmployees, Mode=OneWay}"
+                        SelectedIndex="{Binding ListNameEmployeesChoice, Mode=TwoWay}"
+                        SelectedItem="{Binding ListNameEmployee, Mode=OneWayToSource}" />
+                    <ComboBox
+                        Grid.Column="1"
+                        Height="25"
+                        Margin="2.5,0,0,0"
+                        DropDownClosed="ComboBox_DropDownClosed"
+                        FontSize="14"
+                        ItemsSource="{Binding YearOrdersAdd, Mode=OneWay}"
+                        SelectedIndex="{Binding YearOrdersChoice, Mode=TwoWay}"
+                        SelectedItem="{Binding SelectYearOrders, Mode=OneWayToSource}" />
+                </Grid>
 
-            <Grid Margin="5,10,5,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="2.5,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    Foreground="Green"
-                    Text="{Binding SumAllOrders, Mode=OneWay}"
-                    TextWrapping="Wrap" />
-                <Button
-                    Grid.Column="1"
-                    Height="25"
-                    Margin="2.5,0,0,0"
-                    Command="{Binding UpdateStatusOrdersCommand}"
-                    Content="Обновить"
-                    FontSize="14">
-                    <Button.Background>
-                        <LinearGradientBrush>
-                            <GradientStop Offset="1" Color="#FFF3F3F3" />
-                            <GradientStop Offset="0.169" Color="#FF96B3F1" />
-                            <GradientStop Offset="0.627" Color="#FF60B6D6" />
-                        </LinearGradientBrush>
-                    </Button.Background>
-                </Button>
-            </Grid>
+                <Grid Margin="5,10,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="2.5,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Foreground="#121910"
+                        Text="{Binding SumAllOrders, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                    <Button
+                        Grid.Column="1"
+                        Height="25"
+                        Margin="2.5,0,0,0"
+                        Command="{Binding UpdateStatusOrdersCommand}"
+                        Content="Обновить"
+                        FontSize="14" />
+                </Grid>
 
-        </StackPanel>
-        <TextBlock
-            Grid.Column="1"
-            Margin="0,10,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            FontSize="14"
-            Foreground="Red"
-            Text="Если сотрудник отгулял отработанный выходной, то необходимо поставить галочку напротив этой даты и нажать кнопку &quot;Обновить&quot;."
-            TextWrapping="Wrap" />
+            </StackPanel>
+            <TextBlock
+                Grid.Column="1"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="14"
+                Foreground="White"
+                Text="Если сотрудник отгулял отработанный выходной, то необходимо поставить галочку напротив этой даты и нажать кнопку &quot;Обновить&quot;."
+                TextWrapping="Wrap" />
+        </Grid>
     </Grid>
 </Window>

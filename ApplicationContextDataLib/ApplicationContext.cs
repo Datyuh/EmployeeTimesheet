@@ -11,7 +11,7 @@ namespace ApplicationContextData
         public ApplicationContext() : base("EmployeeTimesheets")
         {
             //Database.Delete();            
-            Database.CreateIfNotExists();
+            //Database.CreateIfNotExists();
         }
     }
 }

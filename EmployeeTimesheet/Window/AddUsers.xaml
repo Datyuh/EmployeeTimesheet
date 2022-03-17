@@ -21,14 +21,14 @@
             x:Name="DataGridAdd"
             Grid.Column="0"
             AutoGenerateColumns="False"
-            CanUserAddRows="False"            
+            CanUserAddRows="False"
+            CanUserDeleteRows="True"
             CanUserReorderColumns="False"
             HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding AddUsersInGrid, Mode=TwoWay}"
-            VerticalScrollBarVisibility="Auto" 
-            CanUserDeleteRows="True"
-            SelectionMode="Extended">
-            <DataGrid.Columns>   
+            SelectionMode="Extended"
+            VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="120"
                     Binding="{Binding LastName, Mode=TwoWay}"
@@ -45,7 +45,7 @@
                     Width="120"
                     Binding="{Binding ServiceNumbers, Mode=TwoWay}"
                     Header="Таб. номер" />
-            </DataGrid.Columns>           
+            </DataGrid.Columns>
         </DataGrid>
         <StackPanel
             Grid.Column="1"

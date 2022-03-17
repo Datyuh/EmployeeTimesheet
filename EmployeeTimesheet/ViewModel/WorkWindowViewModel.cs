@@ -107,8 +107,14 @@ namespace EmployeeTimesheet.ViewModel
             }
             else
             {
-                var checkDateInBase = addDataEmplTimeModel.CheckDateInBase();
-                _haveDateInBase = checkDateInBase is true;
+                if (AddDataEmployeeTimesheet.Select(p => p.ListReportCards).Contains("Работа в праз. и вых."))
+                {
+                    AddNumOrder addNumOrder = new();
+                    addNumOrder.ShowDialog();
+                }
+
+                var checkDateInBase = addDataEmplTimeModel.CheckDateInBase(StaticDataModel.NumOrders, StaticDataModel.DateOrders);
+                _haveDateInBase = checkDateInBase;
 
                 switch (_haveDateInBase)
                 {
@@ -127,6 +133,7 @@ namespace EmployeeTimesheet.ViewModel
                         //AddEployeeTimessheet();
                         break;
                 }
+
             }
         }
 
@@ -137,13 +144,13 @@ namespace EmployeeTimesheet.ViewModel
         }
 
         private void OnUpdateUserStatusCommandExecuted(object p)
-        {            
+        {
             foreach (WorkWindowModel items in AddDataEmployeeTimesheet)
             {
                 if (items.UpdateUserStatusCheckBox is true)
                 {
                     if (UpdateStatusUsers is true)
-                    {                       
+                    {
                         Employee employee = StaticDataModel.ApplicationContext.Employees.Find(items.Employees.Id);
                         if (employee != null) employee.StatusUsers = "Уволен";
                     }
@@ -171,7 +178,7 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnUpdateStatusUsersCommandExecuted(object p)
         {
-            
+
         }
 
         public ICommand UpdateKbUsersCommand { get; }
@@ -191,7 +198,18 @@ namespace EmployeeTimesheet.ViewModel
                 //ListNameKb.Clear();
                 ForChiefDesignerEnabled = false;
             }
-            
+        }
+
+        public ICommand ShowWorkWeekendsCommand { get; }
+        private bool CanShowWorkWeekendsCommandExecute(object p)
+        {
+            return UpdateKbUsers is false && _selectedNameKb != "Главный констр";
+        }
+
+        private void OnShowWorkWeekendsCommandExecuted(object p)
+        {
+            OrdersWindow ordersWindow = new(AddDataEmployeeTimesheet, NameYearAdd);
+            ordersWindow.ShowDialog();
         }
 
         #endregion
@@ -207,7 +225,7 @@ namespace EmployeeTimesheet.ViewModel
                 StaticDataModel.NameKbFromMain = SelectedNameKbs;
             }
             ReportOutputWindow reportOutput = new(AddDataEmployeeTimesheet, NameMonthSelect, NameYearSelect);
-            reportOutput.ShowDialog();           
+            reportOutput.ShowDialog();
         }
 
         public ICommand AboutProgramCommand { get; }
@@ -233,18 +251,22 @@ namespace EmployeeTimesheet.ViewModel
 
         public WorkWindowViewModel(ObservableCollection<NameKB> nameKbs, string selectedNameKb)
         {
-            ListNameKb = nameKbs;
+            ListNameKb = new ObservableCollection<NameKB>(nameKbs.Where(p => p.NameKbOgk != "Главный констр").Select(p => p));
             _selectedNameKb = selectedNameKb;
+
             AddUsersInBaseCommand = new LambdaCommand(OnAddUsersInBaseCommandExecuted, CanAddUsersInBaseCommandExecute);
             AddDataInBaseCommand = new LambdaCommand(OnAddDataInBaseCommandExecuted, CanAddDataInBaseCommandExecute);
             UpdateUserStatusCommand = new LambdaCommand(OnUpdateUserStatusCommandExecuted, CanUpdateUserStatusCommandExecute);
             GenerateReportCommand = new LambdaCommand(OnGenerateReportCommandExecuted, CanGenerateReportCommandExecute);
             AboutProgramCommand = new LambdaCommand(OnAboutProgramCommandExecuted, CanAboutProgramCommandExecute);
             ShowEmployeeStatusCommand = new LambdaCommand(OnShowEmployeeStatusCommandExecuted, CanShowEmployeeStatusCommandExecute);
-            NameYearAdd = new SelectedWorkModel(StaticDataModel.ApplicationContext).SelectedYearInBase();
-            NameMonthAdd = DateTimeFormatInfo.CurrentInfo.MonthNames;
             UpdateStatusUsersCommand = new LambdaCommand(OnUpdateStatusUsersCommandExecuted, CanUpdateStatusUsersCommandExecute);
             UpdateKbUsersCommand = new LambdaCommand(OnUpdateKbUsersCommandExecuted, CanUpdateKbUsersCommandExecute);
+            ShowWorkWeekendsCommand = new LambdaCommand(OnShowWorkWeekendsCommandExecuted, CanShowWorkWeekendsCommandExecute);
+
+            NameYearAdd = new SelectedWorkModel(StaticDataModel.ApplicationContext).SelectedYearInBase();
+            NameMonthAdd = DateTimeFormatInfo.CurrentInfo.MonthNames;
+
             NameMonthChoice = DateTime.Now.Month - 1;
             NameYearChoice = NameYearAdd.Count - 1;
             AddEployeeTimessheet();
@@ -290,7 +312,7 @@ namespace EmployeeTimesheet.ViewModel
                                      selectedWorkModel.SumHalfDayWork(workEmployee),
                         SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee),
                         SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
-                        SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) + 
+                        SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) +
                                      selectedWorkModel.SumHalfDayWork(workEmployee),
                         SumDayRemoteWork = selectedWorkModel.SumDayRemoteWork(workEmployee),
                         SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee),
@@ -308,7 +330,7 @@ namespace EmployeeTimesheet.ViewModel
             SelectedWorkModel selectedWorkModel = new(StaticDataModel.ApplicationContext);
             selectedWorkModel._monthChoices = NameMonthRetInt.NameMonth(NameMonthSelect);
             selectedWorkModel._yearChoices = NameMonthRetInt.NameYear(NameYearSelect);
-            foreach(Employee workEmployee in _selectedWorkEmployee
+            foreach (Employee workEmployee in _selectedWorkEmployee
                     .Select(p => p).Where(p => p.StatusUsers.Contains("Работает")))
             {
                 WorkWindowModel workWindowModelItem = AddDataEmployeeTimesheet.FirstOrDefault(p => p.Fio == workEmployee.Fio);

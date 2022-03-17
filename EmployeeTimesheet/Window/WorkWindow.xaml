@@ -320,7 +320,7 @@
                 Grid.Row="1"
                 VerticalAlignment="Bottom"
                 Orientation="Vertical">
-               
+
                 <Button
                     Height="30"
                     Margin="10,0,10,10"
@@ -356,11 +356,29 @@
                     </Button.Background>
                 </Button>
 
-                <Button
-                    Height="30"
-                    Margin="10,0,10,10"
-                    Command="{Binding AboutProgramCommand}"
-                    Content="О программе" />
+                <StackPanel Margin="10,0,10,10" Orientation="Horizontal">
+                    <Button
+                        Width="170"
+                        FontSize="13"
+                        Height="30"
+                        Command="{Binding AboutProgramCommand}"
+                        Content="О программе" />
+                    <Button
+                        Margin="10,0,0,0"
+                        Width="160"
+                        Height="30"
+                        FontSize="13"
+                        Command="{Binding ShowWorkWeekendsCommand}"
+                        Content="Показать выход в вых." >
+                        <Button.Background>
+                            <LinearGradientBrush>
+                                <GradientStop Color="#FFF985FF" Offset="1"/>
+                                <GradientStop Color="#FF5AB6F1" Offset="0"/>
+                                <GradientStop Color="#FFC0BEFF" Offset="0.494"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </StackPanel>
 
                 <ProgressBar
                     Height="10"

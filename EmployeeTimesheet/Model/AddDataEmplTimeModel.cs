@@ -11,6 +11,7 @@ namespace EmployeeTimesheet.Model
         public readonly bool AddChoice;
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
         private ApplicationContext _dbContext;
+        private string statusOrder;
 
         public AddDataEmplTimeModel(ObservableCollection<WorkWindowModel> addDataEmployeeTimesheet)
         {
@@ -29,7 +30,7 @@ namespace EmployeeTimesheet.Model
             return _addDataEmployeeTimesheet.Select(x => x.ListReportCards).Contains(null);
         }
 
-        public bool CheckDateInBase()
+        public bool CheckDateInBase(string numOrder, DateTime? dateOrder)
         {
             foreach (WorkWindowModel items in _addDataEmployeeTimesheet)
             {
@@ -40,21 +41,28 @@ namespace EmployeeTimesheet.Model
                         .Contains(items.DateEnterInBases);
                 if (dateInBse is false)
                 {
-                    return AddDataInBase();
+                    return AddDataInBase(numOrder, dateOrder);
                 }
             }
             return false;
         }
 
-        private bool AddDataInBase()
+        private bool AddDataInBase(string numOrder, DateTime? dateOrder)
         {
             foreach (WorkWindowModel items in _addDataEmployeeTimesheet.Select(p => p).Where(p => p.ListReportCards != null && p.ListReportCards != ""))
-            {               
+            {
+                if (items.DateEnterInBases.Date.DayOfWeek == DayOfWeek.Saturday || items.DateEnterInBases.Date.DayOfWeek == DayOfWeek.Sunday)                
+                    statusOrder = "Не отгулял(а)";                
+                else statusOrder = null;
+
                 ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
                 {
                     Status = items.ListReportCards,
                     DateTimeAddData = items.DateEnterInBases,
-                    Employees = items.Employees,
+                    Employees = items.Employees,  
+                    NumOrder = numOrder,
+                    DateOrder = dateOrder,
+                    StatusOrder = statusOrder,
                 };
                 _dbContext.EmployeeTimesheets.Add(employeeTimesheet);
                 _dbContext.SaveChanges();

@@ -18,6 +18,12 @@ namespace ApplicationContextData
         [ForeignKey("EmployeesId")]
         public Employee Employees { get; set; }
 
+        [MaxLength(20)]
+        public string NumOrder { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? DateOrder { get; set; }
+        public string StatusOrder { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy}", ApplyFormatInEditMode = true)]
         public DateTime RegistrDateInBase { get; set; } = DateTime.Now;

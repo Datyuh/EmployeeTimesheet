@@ -29,13 +29,13 @@ namespace EmployeeTimesheet.Window
 
         private async void CheckBox_MouseLeave(object sender, MouseEventArgs e)
         {
-            await Task.Delay(10000);
+            await Task.Delay(15000);
             TextWarning.Text = null;
         }
 
         private async void CheckBox_MouseLeave_1(object sender, MouseEventArgs e)
         {
-            await Task.Delay(10000);
+            await Task.Delay(15000);
             TextWarning.Text = null;
         }
     }

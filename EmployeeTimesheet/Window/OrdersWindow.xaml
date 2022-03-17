@@ -29,6 +29,18 @@
             HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding AddDataOrders, Mode=TwoWay}"
             VerticalScrollBarVisibility="Auto">
+
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="LightGreen"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding StatusOrder}" Value="Отгулял(а)">
+                            <Setter Property="Background" Value="#ff4c5b"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+
             <DataGrid.Columns>
                 <!--<DataGridCheckBoxColumn Binding="{Binding UpdateUserStatusCheckBox}" />-->
                 <DataGridTemplateColumn>

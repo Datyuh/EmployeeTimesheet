@@ -11,10 +11,12 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class WorkWindow
     {
+        private WorkWindowViewModel _workWindowViewModel;
         public WorkWindow(ObservableCollection<NameKB> nameKbs, string selectedNameKb)
         {
             InitializeComponent();
-            DataContext = new WorkWindowViewModel(nameKbs, selectedNameKb);
+            _workWindowViewModel = new WorkWindowViewModel(nameKbs, selectedNameKb);
+            DataContext = _workWindowViewModel;
         }
 
         private void CheckBox_MouseEnter(object sender, MouseEventArgs e)
@@ -37,6 +39,11 @@ namespace EmployeeTimesheet.Window
         {
             await Task.Delay(15000);
             TextWarning.Text = null;
+        }
+
+        private void ComboBox_DropDownClosed(object sender, System.EventArgs e)
+        {
+            _workWindowViewModel.RefreshEployeeTimessheet();
         }
     }
 }

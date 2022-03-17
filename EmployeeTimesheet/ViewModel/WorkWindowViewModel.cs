@@ -237,14 +237,14 @@ namespace EmployeeTimesheet.ViewModel
             aboutProgram.ShowDialog();
         }
 
-        public ICommand ShowEmployeeStatusCommand { get; }
-        private bool CanShowEmployeeStatusCommandExecute(object p) => true;
+        //public ICommand ShowEmployeeStatusCommand { get; }
+        //private bool CanShowEmployeeStatusCommandExecute(object p) => true;
 
-        private void OnShowEmployeeStatusCommandExecuted(object p)
-        {
-            RefreshEployeeTimessheet();
-            //AddEployeeTimessheet();
-        }
+        //private void OnShowEmployeeStatusCommandExecuted(object p)
+        //{
+        //    RefreshEployeeTimessheet();
+        //    //AddEployeeTimessheet();
+        //}
 
 
         #endregion
@@ -259,7 +259,7 @@ namespace EmployeeTimesheet.ViewModel
             UpdateUserStatusCommand = new LambdaCommand(OnUpdateUserStatusCommandExecuted, CanUpdateUserStatusCommandExecute);
             GenerateReportCommand = new LambdaCommand(OnGenerateReportCommandExecuted, CanGenerateReportCommandExecute);
             AboutProgramCommand = new LambdaCommand(OnAboutProgramCommandExecuted, CanAboutProgramCommandExecute);
-            ShowEmployeeStatusCommand = new LambdaCommand(OnShowEmployeeStatusCommandExecuted, CanShowEmployeeStatusCommandExecute);
+            //ShowEmployeeStatusCommand = new LambdaCommand(OnShowEmployeeStatusCommandExecuted, CanShowEmployeeStatusCommandExecute);
             UpdateStatusUsersCommand = new LambdaCommand(OnUpdateStatusUsersCommandExecuted, CanUpdateStatusUsersCommandExecute);
             UpdateKbUsersCommand = new LambdaCommand(OnUpdateKbUsersCommandExecuted, CanUpdateKbUsersCommandExecute);
             ShowWorkWeekendsCommand = new LambdaCommand(OnShowWorkWeekendsCommandExecuted, CanShowWorkWeekendsCommandExecute);

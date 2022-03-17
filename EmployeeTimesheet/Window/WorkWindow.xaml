@@ -213,6 +213,7 @@
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
+                            DropDownClosed="ComboBox_DropDownClosed"
                             FontSize="14"
                             ItemsSource="{Binding NameMonthAdd, Mode=OneWay}"
                             SelectedIndex="{Binding NameMonthChoice, Mode=OneWay}"
@@ -228,12 +229,13 @@
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
+                            DropDownClosed="ComboBox_DropDownClosed"
                             FontSize="14"
                             ItemsSource="{Binding NameYearAdd, Mode=OneWay}"
                             SelectedIndex="{Binding NameYearChoice, Mode=OneWay}"
                             SelectedItem="{Binding NameYearSelect, Mode=OneWayToSource}" />
                     </StackPanel>
-                    <Button
+                    <!--<Button
                         Width="120"
                         Height="24"
                         Margin="0,10,5,10"
@@ -243,7 +245,7 @@
                         VerticalContentAlignment="Center"
                         Command="{Binding ShowEmployeeStatusCommand}"
                         Content="Обновить"
-                        FontSize="14" />
+                        FontSize="14" />-->
                 </StackPanel>
 
             </StackPanel>
@@ -359,22 +361,22 @@
                 <StackPanel Margin="10,0,10,10" Orientation="Horizontal">
                     <Button
                         Width="170"
-                        FontSize="13"
                         Height="30"
                         Command="{Binding AboutProgramCommand}"
-                        Content="О программе" />
+                        Content="О программе"
+                        FontSize="13" />
                     <Button
-                        Margin="10,0,0,0"
                         Width="160"
                         Height="30"
-                        FontSize="13"
+                        Margin="10,0,0,0"
                         Command="{Binding ShowWorkWeekendsCommand}"
-                        Content="Показать выход в вых." >
+                        Content="Показать выход в вых."
+                        FontSize="13">
                         <Button.Background>
                             <LinearGradientBrush>
-                                <GradientStop Color="#FFF985FF" Offset="1"/>
-                                <GradientStop Color="#FF5AB6F1" Offset="0"/>
-                                <GradientStop Color="#FFC0BEFF" Offset="0.494"/>
+                                <GradientStop Offset="1" Color="#FFF985FF" />
+                                <GradientStop Offset="0" Color="#FF5AB6F1" />
+                                <GradientStop Offset="0.494" Color="#FFC0BEFF" />
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>

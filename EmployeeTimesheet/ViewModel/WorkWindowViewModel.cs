@@ -97,17 +97,18 @@ namespace EmployeeTimesheet.ViewModel
 
         private void OnAddDataInBaseCommandExecuted(object p)
         {
+            var ordersOutGrid = AddDataEmployeeTimesheet.Select(p => p.ListReportCards).Contains("Работа в праз. и вых.");
             AddDataEmplTimeModel addDataEmplTimeModel = new(AddDataEmployeeTimesheet);
             var searchNullInGrid = addDataEmplTimeModel.AddChoice;
             var nowDateInBase = new SelectedWorkModel(StaticDataModel.ApplicationContext).NowDateInBase().Contains(DateTime.Now.Date);
-            if (searchNullInGrid is true && nowDateInBase is false)
+            if (searchNullInGrid is true)
             {
                 MessageBox.Show("Не установлен статус работкника\\ов\nна выбранную дату в графе \"Выбор статуса\"",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                if (AddDataEmployeeTimesheet.Select(p => p.ListReportCards).Contains("Работа в праз. и вых."))
+                if (ordersOutGrid == true)
                 {
                     AddNumOrder addNumOrder = new();
                     addNumOrder.ShowDialog();
@@ -119,12 +120,19 @@ namespace EmployeeTimesheet.ViewModel
                 switch (_haveDateInBase)
                 {
                     case false:
-                        var addInBase = MessageBox.Show("Данные с такой датой уже занесены в таблицу.\nИзменить статус?",
+                        if (StaticDataModel.NumOrders == null || StaticDataModel.DateOrders == null)
+                            break;
+                                                
+                        else
+                        {
+                            var addInBase = MessageBox.Show("Данные с такой датой уже занесены в таблицу.\nИзменить статус?",
                             "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                        var canRedirect = addDataEmplTimeModel.CanRedirectDataInBase(addInBase);
-                        if (canRedirect is true)
-                            goto default;
-                        break;
+                            var canRedirect = addDataEmplTimeModel.CanRedirectDataInBase(addInBase);
+                            if (canRedirect is true)
+                                goto default;
+                            break;
+                        }
+                       
                     default:
                         MessageBox.Show("Данные занесены в таблицу",
                             "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -203,7 +211,7 @@ namespace EmployeeTimesheet.ViewModel
         public ICommand ShowWorkWeekendsCommand { get; }
         private bool CanShowWorkWeekendsCommandExecute(object p)
         {
-            return UpdateKbUsers is false && _selectedNameKb != "Главный констр";
+            return _selectedNameKb != "Главный констр";
         }
 
         private void OnShowWorkWeekendsCommandExecuted(object p)

@@ -22,12 +22,16 @@ namespace EmployeeTimesheet.Model
 
         private bool SearchNullInGrid()
         {
+            var checkIncluded = _addDataEmployeeTimesheet.Select(x => x.ListReportCards).ToList();
             var weekend = _addDataEmployeeTimesheet.Select(x => x.DateEnterInBases.DayOfWeek);
-            if (weekend.Contains(DayOfWeek.Saturday) is true || weekend.Contains(DayOfWeek.Sunday) is true)
-            {
+            if (weekend.Contains(DayOfWeek.Saturday) is true || weekend.Contains(DayOfWeek.Sunday) is true)            
                 return false;
-            }
-            return _addDataEmployeeTimesheet.Select(x => x.ListReportCards).Contains(null);
+            
+            else if (checkIncluded.All(p => p == null) || checkIncluded.All(p => p == ""))            
+                return true;
+            
+            else return false;
+            
         }
 
         public bool CheckDateInBase(string numOrder, DateTime? dateOrder)
@@ -41,7 +45,10 @@ namespace EmployeeTimesheet.Model
                         .Contains(items.DateEnterInBases);
                 if (dateInBse is false)
                 {
-                    return AddDataInBase(numOrder, dateOrder);
+                    if (numOrder == null || dateOrder == null)                    
+                        return false;
+                    else
+                        return AddDataInBase(numOrder, dateOrder);
                 }
             }
             return false;

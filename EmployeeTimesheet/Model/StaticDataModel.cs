@@ -7,7 +7,7 @@ namespace EmployeeTimesheet.Model
     {
         public static NameKB NameKbFromMain { get; set; }
         public static ApplicationContext ApplicationContext { get; set; } = new();
-        public static string NumOrders { get; set; }
-        public static DateTime? DateOrders { get; set; }
+        //public static string NumOrders { get; set; }
+        //public static DateTime? DateOrders { get; set; }
     }
 }

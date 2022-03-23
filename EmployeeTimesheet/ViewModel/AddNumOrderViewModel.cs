@@ -11,13 +11,16 @@ namespace EmployeeTimesheet.ViewModel
     {
         public Action CloseAction { get; set; }
 
+        public string NumOrdersOut { get; private set; }
+        public DateTime? DateOrdersOut { get; private set; }
+
         private string _numOrder;
         public string NumOrder { get => _numOrder; set => Set(ref _numOrder, value); }
 
         private DateTime _dateOrder;
         public DateTime DateOrder { get => _dateOrder; set => Set(ref _dateOrder, value); }
 
-        private DateTime _dateOrders;
+        private DateTime _dateOrders;       
         public DateTime DateOrders { get => _dateOrders; set => Set(ref _dateOrders, value); }
 
         #region AllCommands
@@ -32,20 +35,9 @@ namespace EmployeeTimesheet.ViewModel
             }
             else
             {
-                StaticDataModel.NumOrders = $"№{NumOrder}";
-                var dateOrderWeek = DateOrder.DayOfWeek;
-                 switch (dateOrderWeek)
-                {
-                    case DayOfWeek.Saturday or DayOfWeek.Sunday:
-                        StaticDataModel.DateOrders = DateOrder;
-                        CloseAction();
-                        break;
-                    default:
-                        StaticDataModel.DateOrders = (DateTime?)null;
-                        MessageBox.Show("Неуказан номер или дата распоряжения",
-                                "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-                        break;                         
-                };                                
+                NumOrdersOut = $"№{NumOrder}";
+                DateOrdersOut = DateOrder; 
+                CloseAction();
             }
         }
         #endregion

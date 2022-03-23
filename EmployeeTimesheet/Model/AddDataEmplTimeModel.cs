@@ -11,7 +11,8 @@ namespace EmployeeTimesheet.Model
         public readonly bool AddChoice;
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
         private ApplicationContext _dbContext;
-        private string statusOrder;
+        private string statusOrder => StatusOder();
+        private ObservableCollection<object> workWindowModels => new(_addDataEmployeeTimesheet.Select(p => p).Where(p => p.ListReportCards != null && p.ListReportCards != ""));
 
         public AddDataEmplTimeModel(ObservableCollection<WorkWindowModel> addDataEmployeeTimesheet)
         {
@@ -24,14 +25,14 @@ namespace EmployeeTimesheet.Model
         {
             var checkIncluded = _addDataEmployeeTimesheet.Select(x => x.ListReportCards).ToList();
             var weekend = _addDataEmployeeTimesheet.Select(x => x.DateEnterInBases.DayOfWeek);
-            if (weekend.Contains(DayOfWeek.Saturday) is true || weekend.Contains(DayOfWeek.Sunday) is true)            
+            if (weekend.Contains(DayOfWeek.Saturday) is true || weekend.Contains(DayOfWeek.Sunday) is true)
                 return false;
-            
-            else if (checkIncluded.All(p => p == null) || checkIncluded.All(p => p == ""))            
+
+            else if (checkIncluded.All(p => p == null) || checkIncluded.All(p => p == ""))
                 return true;
-            
+
             else return false;
-            
+
         }
 
         public bool CheckDateInBase(string numOrder, DateTime? dateOrder)
@@ -45,10 +46,7 @@ namespace EmployeeTimesheet.Model
                         .Contains(items.DateEnterInBases);
                 if (dateInBse is false)
                 {
-                    if (numOrder == null || dateOrder == null)                    
-                        return false;
-                    else
-                        return AddDataInBase(numOrder, dateOrder);
+                    return AddDataInBase(numOrder, dateOrder);
                 }
             }
             return false;
@@ -56,49 +54,60 @@ namespace EmployeeTimesheet.Model
 
         private bool AddDataInBase(string numOrder, DateTime? dateOrder)
         {
-            foreach (WorkWindowModel items in _addDataEmployeeTimesheet.Select(p => p).Where(p => p.ListReportCards != null && p.ListReportCards != ""))
+            foreach (WorkWindowModel items in workWindowModels)
             {
-                if (items.DateEnterInBases.Date.DayOfWeek == DayOfWeek.Saturday || items.DateEnterInBases.Date.DayOfWeek == DayOfWeek.Sunday)                
-                    statusOrder = "Не отгулял(а)";                
-                else statusOrder = null;
 
                 ApplicationContextData.EmployeeTimesheet employeeTimesheet = new()
                 {
                     Status = items.ListReportCards,
                     DateTimeAddData = items.DateEnterInBases,
-                    Employees = items.Employees,  
+                    Employees = items.Employees,
                     NumOrder = numOrder,
                     DateOrder = dateOrder,
                     StatusOrder = statusOrder,
                 };
                 _dbContext.EmployeeTimesheets.Add(employeeTimesheet);
                 _dbContext.SaveChanges();
-                
+
             }
             return true;
         }
 
-        public bool CanRedirectDataInBase(MessageBoxResult messageResult)
+        public bool CanRedirectDataInBase(MessageBoxResult messageResult, string numOrder, DateTime? dateOrder)
         {
-            return messageResult == MessageBoxResult.Yes && RedirectDataInBase();
+            return messageResult == MessageBoxResult.Yes && RedirectDataInBase(numOrder, dateOrder);
         }
 
-        private bool RedirectDataInBase()
+        private bool RedirectDataInBase(string numOrder, DateTime? dateOrder)
         {
-            foreach (WorkWindowModel items in _addDataEmployeeTimesheet.Select(p => p).Where(p => p.ListReportCards != null && p.ListReportCards != ""))
-            {                
+            foreach (WorkWindowModel items in workWindowModels)
+            {
                 var employee = _dbContext.EmployeeTimesheets
                     .Select(x => x)
                     .Where(x => x.EmployeesId == items.Employees.Id
                                 && x.DateTimeAddData == items.DateEnterInBases);
+
                 foreach (var status in employee)
                 {
                     status.Status = items.ListReportCards;
+                    status.NumOrder = numOrder;
+                    status.DateOrder = dateOrder;
+                    status.StatusOrder = statusOrder;
                 }
 
-                _dbContext.SaveChanges();               
+                _dbContext.SaveChanges();
             }
             return true;
+        }
+
+        private string StatusOder()
+        {
+            foreach (WorkWindowModel items in workWindowModels)
+            {
+                if (items.DateEnterInBases.Date.DayOfWeek == DayOfWeek.Saturday || items.DateEnterInBases.Date.DayOfWeek == DayOfWeek.Sunday)
+                    return "Не отгулял(а)";
+            }
+            return null;
         }
     }
 }

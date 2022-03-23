@@ -19,6 +19,10 @@ namespace EmployeeTimesheet.ViewModel
     {
         private bool _haveDateInBase;
         private string _selectedNameKb;
+
+        private DateTime? DateOrder { get; set; }
+        private string NumOrder { get; set; }
+
         private ObservableCollection<Employee> _selectedWorkEmployee;
 
         private ObservableCollection<WorkWindowModel> _addDataEmployeeTimesheet;
@@ -108,31 +112,29 @@ namespace EmployeeTimesheet.ViewModel
             }
             else
             {
+                NumOrder = null;
+                DateOrder = null;
                 if (ordersOutGrid == true)
                 {
                     AddNumOrder addNumOrder = new();
                     addNumOrder.ShowDialog();
+                    NumOrder = addNumOrder.OutOrders().NumOrder;
+                    DateOrder = addNumOrder.OutOrders().DateOrder;
                 }
 
-                var checkDateInBase = addDataEmplTimeModel.CheckDateInBase(StaticDataModel.NumOrders, StaticDataModel.DateOrders);
+                var checkDateInBase = addDataEmplTimeModel.CheckDateInBase(NumOrder, DateOrder);
                 _haveDateInBase = checkDateInBase;
 
                 switch (_haveDateInBase)
                 {
                     case false:
-                        if (StaticDataModel.NumOrders == null || StaticDataModel.DateOrders == null)
-                            break;
-                                                
-                        else
-                        {
-                            var addInBase = MessageBox.Show("Данные с такой датой уже занесены в таблицу.\nИзменить статус?",
-                            "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                            var canRedirect = addDataEmplTimeModel.CanRedirectDataInBase(addInBase);
-                            if (canRedirect is true)
-                                goto default;
-                            break;
-                        }
-                       
+                        var addInBase = MessageBox.Show("Данные с такой датой уже занесены в таблицу.\nИзменить статус?",
+                        "Ошибка", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        var canRedirect = addDataEmplTimeModel.CanRedirectDataInBase(addInBase, NumOrder, DateOrder);
+                        if (canRedirect is true)
+                            goto default;
+                        break;
+
                     default:
                         MessageBox.Show("Данные занесены в таблицу",
                             "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);

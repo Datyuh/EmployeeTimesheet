@@ -8,12 +8,21 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class AddNumOrder : System.Windows.Window
     {
+        public DateTime? DateOrder { get; set; }
+        public string NumOrder { get; set; }
+
+        private AddNumOrderViewModel addNumOrderViewModel;
         public AddNumOrder()
         {
             InitializeComponent();
-            AddNumOrderViewModel addNumOrderViewModel = new AddNumOrderViewModel();
+            addNumOrderViewModel = new AddNumOrderViewModel();
             DataContext = addNumOrderViewModel;
-            addNumOrderViewModel.CloseAction = Close;
+            addNumOrderViewModel.CloseAction = Close;            
+        }
+
+        public (string NumOrder, DateTime? DateOrder) OutOrders()
+        {
+            return (NumOrder: addNumOrderViewModel.NumOrdersOut, DateOrder: addNumOrderViewModel.DateOrdersOut);
         }
     }
 }

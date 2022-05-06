@@ -13,7 +13,7 @@
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     WindowStyle="ToolWindow"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Closing="Window_Closing">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0.8,0" EndPoint="0.4,1">

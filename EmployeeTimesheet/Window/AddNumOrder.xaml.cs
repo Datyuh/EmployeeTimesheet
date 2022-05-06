@@ -8,9 +8,6 @@ namespace EmployeeTimesheet.Window
     /// </summary>
     public partial class AddNumOrder : System.Windows.Window
     {
-        public DateTime? DateOrder { get; set; }
-        public string NumOrder { get; set; }
-
         private AddNumOrderViewModel addNumOrderViewModel;
         public AddNumOrder()
         {
@@ -23,6 +20,11 @@ namespace EmployeeTimesheet.Window
         public (string NumOrder, DateTime? DateOrder) OutOrders()
         {
             return (NumOrder: addNumOrderViewModel.NumOrdersOut, DateOrder: addNumOrderViewModel.DateOrdersOut);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
     }
 }

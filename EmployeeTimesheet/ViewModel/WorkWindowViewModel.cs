@@ -260,7 +260,7 @@ namespace EmployeeTimesheet.ViewModel
         #endregion
 
         public WorkWindowViewModel(ObservableCollection<NameKB> nameKbs, string selectedNameKb)
-        {
+        {      
             ListNameKb = new ObservableCollection<NameKB>(nameKbs.Where(p => p.NameKbOgk != "Главный констр").Select(p => p));
             _selectedNameKb = selectedNameKb;
 
@@ -279,6 +279,7 @@ namespace EmployeeTimesheet.ViewModel
 
             NameMonthChoice = DateTime.Now.Month - 1;
             NameYearChoice = NameYearAdd.Count - 1;
+            //var d = new ConsultantParsing(2022).DayOfWeekend;
             AddEployeeTimessheet();
         }
 
@@ -319,7 +320,8 @@ namespace EmployeeTimesheet.ViewModel
                         Fio = workEmployee.Fio,
                         ServiceNumbers = workEmployee.ServiceNumbers,
                         SumDayWork = selectedWorkModel.SumDayWork(workEmployee) +
-                                     selectedWorkModel.SumHalfDayWork(workEmployee),
+                                     selectedWorkModel.SumHalfDayWork(workEmployee) + 
+                                     selectedWorkModel.SumBusinessTrip(workEmployee),
                         SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee),
                         SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee),
                         SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) +
@@ -345,11 +347,12 @@ namespace EmployeeTimesheet.ViewModel
             {
                 WorkWindowModel workWindowModelItem = AddDataEmployeeTimesheet.FirstOrDefault(p => p.Fio == workEmployee.Fio);
                 workWindowModelItem.SumDayWork = selectedWorkModel.SumDayWork(workEmployee) +
-                                         selectedWorkModel.SumHalfDayWork(workEmployee);
+                    selectedWorkModel.SumHalfDayWork(workEmployee) +
+                    selectedWorkModel.SumBusinessTrip(workEmployee);
                 workWindowModelItem.SumDayWorkWeekends = selectedWorkModel.SumDayWorkWeekends(workEmployee);
                 workWindowModelItem.SumDayMedical = selectedWorkModel.SumDayMedical(workEmployee);
                 workWindowModelItem.SumDayOwnExpense = selectedWorkModel.SumDayOwnExpense(workEmployee) +
-                                     selectedWorkModel.SumHalfDayWork(workEmployee);
+                    selectedWorkModel.SumHalfDayWork(workEmployee);
                 workWindowModelItem.SumDayRemoteWork = selectedWorkModel.SumDayRemoteWork(workEmployee);
                 workWindowModelItem.SumDayVacation = selectedWorkModel.SumDayVacation(workEmployee);
                 workWindowModelItem.SumDayWeekendWork = selectedWorkModel.SumWeekendWork(workEmployee);

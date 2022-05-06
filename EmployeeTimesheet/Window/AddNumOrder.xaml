@@ -55,6 +55,7 @@
                     Text="Дата"
                     TextAlignment="Center" />
                 <DatePicker
+                    x:Name="CalendarOrders"
                     Width="150"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Center"

@@ -17,7 +17,7 @@ namespace EmployeeTimesheet.Window
             InitializeComponent();
             addNumOrderViewModel = new AddNumOrderViewModel();
             DataContext = addNumOrderViewModel;
-            addNumOrderViewModel.CloseAction = Close;            
+            addNumOrderViewModel.CloseAction = Close;
         }
 
         public (string NumOrder, DateTime? DateOrder) OutOrders()

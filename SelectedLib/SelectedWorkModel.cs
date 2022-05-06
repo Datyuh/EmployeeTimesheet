@@ -97,6 +97,18 @@ namespace SelectedLib
 
         }
 
+        public double SumBusinessTrip(Employee workEmployee)
+        {
+            var sumBusinessTrip = SelectedEmployeeTimesheet
+                .Where(e => e.Status == "Командировка"
+                            && e.Employees == workEmployee
+                            && e.DateTimeAddData.Month == _monthChoices)
+                .Select(p => p.DateTimeAddData)
+                .Count();
+            return sumBusinessTrip;
+
+        }
+
         public int SumDayOwnExpense(Employee workEmployee)
         {
             var sumDayOwnExpense = SelectedEmployeeTimesheet

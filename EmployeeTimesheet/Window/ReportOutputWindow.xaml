@@ -15,9 +15,9 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Background>
-            <LinearGradientBrush EndPoint="0.4,1" StartPoint="0.8,0">
-                <GradientStop Color="#FF006DFF" Offset="0"/>
-                <GradientStop Color="#FF74FFA9" Offset="1"/>
+            <LinearGradientBrush StartPoint="0.8,0" EndPoint="0.4,1">
+                <GradientStop Offset="0" Color="#FF006DFF" />
+                <GradientStop Offset="1" Color="#FF74FFA9" />
             </LinearGradientBrush>
         </Grid.Background>
         <StackPanel VerticalAlignment="Center" Orientation="Vertical">

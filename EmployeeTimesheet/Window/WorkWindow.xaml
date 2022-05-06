@@ -252,7 +252,7 @@
                         VerticalContentAlignment="Center"
                         DisplayMemberPath="NameKbOgk"
                         IsEnabled="{Binding ForChiefDesignerEnabled}"
-                        ItemsSource="{Binding ListNameKb, Mode=TwoWay}"
+                        ItemsSource="{Binding ListNameKb, Mode=OneWay}"
                         SelectedItem="{Binding SelectedNameKbs}" />
 
                     <Button
